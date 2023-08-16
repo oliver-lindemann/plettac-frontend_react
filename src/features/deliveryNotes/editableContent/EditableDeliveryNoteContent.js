@@ -1,13 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
 import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import { Button, Checkbox, CircularProgress, Divider, FormControlLabel, Grid, InputAdornment, ListItemAvatar, ListItemText, MenuItem, Paper, Tab, Tabs, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
 import Swal from 'sweetalert2'
 
 import AddableListPartsList from '../../lists/AddableListPartsList'
 
-import UserSelect from '../../../components/forms/UserSelect'
 import DefaultContainer from '../../../components/layout/DefaultContainer'
 import FloatingButton from '../../../components/layout/FloatingButton'
 import { TAB_HEIGHT } from '../../../components/layout/TabLayout'
@@ -20,7 +19,7 @@ import useUsers from '../../../hooks/users/useUsers'
 import useSignatureDialog from '../../../hooks/dialogs/useSignatureDialog'
 import useInput from '../../../hooks/forms/useInput'
 
-import { AccountCircleOutlined, Add, BusinessOutlined, CarpenterOutlined, CheckCircleOutlined, CircleOutlined, DirectionsCarOutlined, ErrorOutlineOutlined, FileDownloadOutlined, FileUploadOutlined, MonetizationOnOutlined, NotesOutlined, QueryBuilderOutlined, Save } from '@mui/icons-material'
+import { AccountCircleOutlined, Add, BusinessOutlined, CarpenterOutlined, CheckCircleOutlined, CircleOutlined, DirectionsCarOutlined, ErrorOutlineOutlined, FileDownloadOutlined, FileUploadOutlined, MonetizationOnOutlined, NotesOutlined, Save } from '@mui/icons-material'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { deDE } from '@mui/x-date-pickers/locales'
@@ -28,8 +27,8 @@ import { deDE } from '@mui/x-date-pickers/locales'
 import { IoMdArrowRoundForward } from 'react-icons/io'
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from 'react-icons/md'
 
+import { DELIVERY_NOTE_LOGISTICS, DELIVERY_NOTE_TYPE, PLETTAC } from '../../../config/deliveryNote'
 import { LIST_STATUS, LIST_STATUS_LANG } from '../../../config/list'
-import { DELIVERY_NOTE_LOGISTICS, DELIVERY_NOTE_TYPE, GMW, PLETTAC } from '../../../config/deliveryNote'
 
 import { dayjsUTC, getDayjsWithoutTime } from '../../../utils/DateUtils'
 import { copyArray, sortChecklistPartsByOrderIndex } from '../../../utils/checklist/ChecklistPartsUtils'
@@ -40,11 +39,9 @@ import { TOP_NAV_HEIGHT } from '../../navigation/TopNav'
 import SignatureDisplay from './SignatureDisplay'
 
 import "swiper/css"
-import UserAvatar from '../../../components/utils/UserAvatar'
 import ItemSelect from '../../../components/select/ItemSelect'
+import UserAvatar from '../../../components/utils/UserAvatar'
 
-import GMW_LOGO from '../../../images/GMW_Logo_Web.jpg'
-import PLETTAC_LOGO from '../../../images/PlettacAssco_Logo_small.jpg'
 
 const deployIcons = {
     'true': <MdOutlineVisibility color="#487d32" size={25} />,
@@ -90,8 +87,8 @@ const EditableDeliveryNoteContent = ({ deliveryNote, onSaveButtonClicked }) => {
         valueChangeHandler: issuingCompanyChangeHandler,
         inputBlurHandler: issuingCompanyBlurHandler,
     } = useInput({
-        defaultValue: GMW,
-        initialValue: deliveryNote?.issuingCompany || GMW,
+        defaultValue: PLETTAC,
+        initialValue: deliveryNote?.issuingCompany || PLETTAC,
         validateValue: (value) => value?.trim() !== ''
     });
 
@@ -217,7 +214,7 @@ const EditableDeliveryNoteContent = ({ deliveryNote, onSaveButtonClicked }) => {
     });
 
     const [logistics, setLogistics] = useState(deliveryNote?.logistics || DELIVERY_NOTE_LOGISTICS.OUTBOUND);
-    const [type, setType] = useState(deliveryNote?.type || DELIVERY_NOTE_TYPE.RENTAL);
+    const [type, setType] = useState(deliveryNote?.type || DELIVERY_NOTE_TYPE.SALE);
     const [dateOfIssue, setDateOfIssue] = useState(deliveryNote?.dateOfIssue ? dayjsUTC(deliveryNote.dateOfIssue) : dayjsUTC());
     const [signatures, setSignatures] = useState(deliveryNote?.signatures)
 
@@ -262,12 +259,6 @@ const EditableDeliveryNoteContent = ({ deliveryNote, onSaveButtonClicked }) => {
             customParts: deliveryNoteCustomParts
         }
     }
-
-    useEffect(() => {
-        if (issuingCompany === PLETTAC) {
-            setType(DELIVERY_NOTE_TYPE.SALE)
-        }
-    }, [issuingCompany])
 
     useEffect(() => {
         // do only save changes locally if this parts are added
@@ -439,38 +430,12 @@ const EditableDeliveryNoteContent = ({ deliveryNote, onSaveButtonClicked }) => {
                 ) : null
             }
 
-            {/* <div className='d-flex mt-3'>
-                <ToggleButtonGroup
-                    orientation='horizontal'
-                    value={issuingCompany}
-                    exclusive
-                    onChange={(e, newValue) => setIssuingCompany(newValue)}
-                    fullWidth
-                    color='primary'
-                >
-                    <ToggleButton value='GMW'>
-                        <img
-                            src={GMW_LOGO}
-                            height="50"
-                            className="d-inline-block align-top"
-                            alt="GMW logo"
-                        />
-                    </ToggleButton>
-                    <ToggleButton value="PLETTAC">
-                        <img
-                            src={PLETTAC_LOGO}
-                            height="50"
-                            className="d-inline-block align-top"
-                            alt="PLETTAC logo"
-                        />
-                    </ToggleButton>
-                </ToggleButtonGroup>
-            </div> */}
-
             {
                 (deliveryNote?._id && issuingCompany === PLETTAC) && (
                     <TextField
                         className='mt-3'
+
+                        disabled
 
                         label='Lieferschein-Nummer'
                         variant='outlined'
@@ -745,13 +710,6 @@ const EditableDeliveryNoteContent = ({ deliveryNote, onSaveButtonClicked }) => {
                                     fullWidth
                                     onChange={handleTypeChanged}
                                 >
-                                    {
-                                        issuingCompany !== PLETTAC && (
-                                            <ToggleButton value={DELIVERY_NOTE_TYPE.RENTAL} color='primary' >
-                                                <QueryBuilderOutlined /><div className='mx-1' /> Miete
-                                            </ToggleButton>
-                                        )
-                                    }
                                     <ToggleButton value={DELIVERY_NOTE_TYPE.SALE} color="secondary" >
                                         <MonetizationOnOutlined /><div className='mx-1' /> Verkauf
                                     </ToggleButton>

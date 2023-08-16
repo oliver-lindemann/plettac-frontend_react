@@ -99,6 +99,12 @@ const DeliveryNote = () => {
         return allRequiredFieldsSet;
     }
 
+    const createStorno = async (deliveryNote) => {
+
+
+
+    }
+
     const generatePdfFile = async (deliveryNote) => {
         return await generatePlettacPDF(deliveryNote);
     }

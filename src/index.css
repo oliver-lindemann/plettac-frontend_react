@@ -221,3 +221,7 @@ input[type=number] {
 .deliveryNote__part__status__deleted-tr {
   text-decoration-line: line-through !important;
 }
+
+.tablePagination p {
+  margin-top: 1rem;
+}

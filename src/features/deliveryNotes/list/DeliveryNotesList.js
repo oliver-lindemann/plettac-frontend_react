@@ -1,17 +1,18 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useMemo, useState } from "react";
 import { BrowserView, MobileView } from "react-device-detect";
+import { useNavigate } from "react-router-dom";
 
-import { LocalShippingOutlined, TaskAltOutlined } from "@mui/icons-material";
-import { Alert, Button, Chip, CircularProgress, Typography } from "@mui/material";
+import { Search } from "@mui/icons-material";
+import { Alert, CircularProgress, InputAdornment, TablePagination, TextField, ThemeProvider, Typography, createTheme, useTheme } from "@mui/material";
 
-import { dayjsUTC, getDayjsWithoutTime } from "../../../utils/DateUtils";
+import useDeliveryNotes from "../../../hooks/deliveryNotes/useDeliveryNotes";
+import { removeWhitespace } from "../../../utils/StringUtils";
 import { isDraftDismissIcon } from "../../../utils/checklist/ChecklistUtils";
+import { DELIVERY_NOTE_DRAFT } from "../editableContent/EditableDeliveryNoteContent";
 import DeliveryNoteTable from "./browser/DeliveryNoteTable";
 import DeliveryNoteTableCompact from "./mobile/DeliveryNoteTableCompact";
-import useDeliveryNotes from "../../../hooks/deliveryNotes/useDeliveryNotes";
-import { LIST_STATUS } from "../../../config/list";
-import { DELIVERY_NOTE_DRAFT } from "../editableContent/EditableDeliveryNoteContent";
+
+import { deDE } from '@mui/material/locale';
 
 function DeliveryNotesList() {
 
@@ -21,8 +22,17 @@ function DeliveryNotesList() {
         deliveryNotes,
     } = useDeliveryNotes();
 
+    const theme = useTheme();
+    const themeWithLocale = useMemo(() => createTheme(theme, deDE), [theme]);
+
+    const [searchQuery, setSearchQuery] = useState('');
+    const searchValues = searchQuery.toLowerCase().split(' ');
+    const filteredDeliveryNotes = deliveryNotes?.filter(deliveryNote => searchValues.every(searchValue => removeWhitespace(JSON.stringify(deliveryNote)).toLowerCase().includes(searchValue)));
+
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+
     const [deliveryNoteDraft, setDeliveryNoteDraft] = useState(localStorage.getItem(DELIVERY_NOTE_DRAFT));
-    const [showAllCompleted, setShowAllCompleted] = useState(false);
 
     if (!deliveryNotes) {
         return <div className="d-flex justify-content-center align-items-center gap-2">
@@ -31,9 +41,15 @@ function DeliveryNotesList() {
         </div>
     }
 
-    const isChecklistCompletedToday = (checklist) => checklist.dateOfCompletion ? !getDayjsWithoutTime().isAfter(dayjsUTC(checklist.dateOfCompletion)) : false;
-    const isChecklistCompleted = (checklist) => checklist.status === LIST_STATUS.DONE;
-    const openDeliveryNotes = deliveryNotes.filter(checklist => !isChecklistCompleted(checklist) || isChecklistCompletedToday(checklist));
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
     // const closedDeliveryNotes = deliveryNotes.filter(checklist => !openDeliveryNotes.includes(checklist));
 
     console.log(deliveryNoteDraft);
@@ -58,50 +74,50 @@ function DeliveryNotesList() {
         )
     }
 
+
+
     return (
         <>
             {deliveryNoteDraftAlert}
             <MobileView>
                 <div className="d-flex justify-content-between m-1">
                     <Typography fontWeight='bold'>Lieferscheine</Typography>
-                    <Chip
-                        variant={showAllCompleted ? 'filled' : 'outlined'}
-                        color="success"
-                        size="small"
-                        icon={<TaskAltOutlined />}
-                        label='Fertig'
-                        onClick={() => setShowAllCompleted(showAll => !showAll)}
-                    />
                 </div>
-                <DeliveryNoteTableCompact deliveryNotes={showAllCompleted ? deliveryNotes : openDeliveryNotes} />
+                <DeliveryNoteTableCompact deliveryNotes={filteredDeliveryNotes} />
             </MobileView>
             <BrowserView>
                 <div className="d-flex justify-content-center">
                     <Typography fontSize={26}>Lieferscheine</Typography>
                 </div>
                 <hr className="p-0 m-0 mb-1" />
-                <div className="pb-1 d-flex justify-content-between align-items-center">
-                    <Button
-                        variant="text"
-                        color="inherit"
-                        startIcon={<LocalShippingOutlined />}
-                        onClick={() => navigate(`/deliveryNotes/new`)}
-                    >Lieferschein erstellen</Button>
+                <div className="d-flex justify-content-between align-items-center">
 
-                    <div className="d-flex justify-content-around">
-                        <Chip
-                            variant={showAllCompleted ? 'filled' : 'outlined'}
-                            color="success"
-                            size="small"
-                            icon={<TaskAltOutlined />}
-                            label='Fertig'
-                            // sx={{ bgcolor: showAllCompleted ? '#d7f5dd' : '' }}
-                            onClick={() => setShowAllCompleted(showAll => !showAll)}
+                    <TextField
+                        type="text"
+                        size='small'
+                        sx={{ width: '30%' }}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Lieferscheine durchsuchen..."
+                        InputProps={{
+                            startAdornment: <InputAdornment position="start"><Search /></InputAdornment>
+                        }}
+                    />
+                    <ThemeProvider theme={themeWithLocale}>
+                        <TablePagination
+                            component="div"
+                            className='tablePagination'
+                            count={filteredDeliveryNotes?.length}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            rowsPerPage={rowsPerPage}
+                            rowsPerPageOptions={[5, 10]}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
                         />
-                    </div>
+                    </ThemeProvider>
                 </div>
 
-                <DeliveryNoteTable deliveryNotes={showAllCompleted ? deliveryNotes : openDeliveryNotes} />
+                <DeliveryNoteTable deliveryNotes={filteredDeliveryNotes?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)} />
+
             </BrowserView>
 
         </>
