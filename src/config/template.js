@@ -1,0 +1,1 @@
+export const EXCEL_TEMPLATE_PATH = '/templates/Excel-Template.xlsm';

@@ -1,0 +1,26 @@
+Firebase Bucket erstellen.
+
+Links: https://stackoverflow.com/a/58613527
+https://cloud.google.com/storage/docs/using-cors?hl=de#command-line
+
+
+Die Konsole unter https://console.cloud.google.com/ öffnen (oben rechts das Konsolen-Icon, beschrieben in Stackoverflow)
+Warten bis die Konsole im neuen Tag geöffnet wird.
+Dort eine neue Datei erstellen und folgendes hineinschreiben:
+[
+    {
+        "origin": ["https://example.com"],
+        "method": ["GET"],
+        "maxAgeSeconds": 3600
+    }
+]
+
+als cors.json speichern
+
+Dann ein neues Terminal-Fenster öffnen und 
+    gcloud storage buckets update gs://gmw-push-notification.appspot.com --cors-file=cors.json
+eingeben. Falls noch nicht authenfiziert, dann über
+    gcloud auth login
+authentifizieren. Hier öffnet sich ein neuer Tab, dort anmelden und Sicherheitscode kopieren.
+Zurück zum Konsolen-Tab wechseln und den Sicherheitscode einfügen.
+Dann den obigen Befehl erneut versuchen.

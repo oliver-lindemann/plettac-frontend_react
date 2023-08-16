@@ -1,0 +1,625 @@
+{
+    "Stahl-Vertikalrahmen": {
+        "parts": [
+            "5F SL7 130 04",
+            "5F SL7 130 05",
+            "5F SL7 130 02",
+            "5F SL7 130 03",
+            "5F SL7 020 00",
+            "5F SL7 020 01",
+            "5F SL7 020 02",
+            "5F SL7 020 03"
+        ],
+        "tags": [
+            "Schtea",
+            "Steher",
+            "Steller",
+            "Rahmen",
+            "2 Kipper"
+        ]
+    },
+    "Stahl-Vertikalrahmen mit 4-Kippstiften": {
+        "parts": [
+            "5F SL7 130 00",
+            "5F SL7 130 01",
+            "5F SL7 020 ST 200",
+            "5F SL1 037 01"
+        ],
+        "tags": [
+            "Innengeländer",
+            "4 Kipper"
+        ]
+    },
+    "Stahl-Vertikalrahmen SL B100/ quadro 109": {
+        "parts": [
+            "5F SL1 035 00",
+            "5F SL1 035 01",
+            "5F SL1 035 02",
+            "5F SL1 035 03"
+        ],
+        "tags": [
+            "Hunderter-Rahmen"
+        ]
+    },
+    "Durchgangsrahmen SL / quadro": {
+        "parts": [
+            "5F SL7 610 00",
+            "5F SLN 280 00"
+        ],
+        "tags": [
+            "Tunnel",
+            "Fußgängertunnel",
+            "Passantenschutz",
+            "Arkadenrahmen"
+        ]
+    },
+    "Traufrahmen": {
+        "parts": [
+            "5F SL7 095 00"
+        ],
+        "tags": [
+            "Krüppelrahmen"
+        ]
+    },
+    "Geländerkupplung": {
+        "parts": [],
+        "tags": [
+            "Kastl"
+        ]
+    },
+    "Diagonale": {
+        "parts": [
+            "5F SNN 600 06",
+            "5F SNN 600 00",
+            "5F SNN 600 01",
+            "5F SNN 600 02",
+            "5F SNN 600 03",
+            "5F SNN 600 04",
+            "5F SNN 600 07",
+            "5F SNN 600 05"
+        ],
+        "tags": [
+            "Strebe",
+            "Schwerter",
+            "Kreuzer"
+        ]
+    },
+    "Untere Diagonalbefestigung / Anfangsstück": {
+        "parts": [
+            "5F SNN 610 00",
+            "2602000 Layher",
+            "5F MPP 020 00",
+            "5F MPP 020 01",
+            "5F MPP 015 01",
+            "5F MPP 015 06",
+            "5F MPP 015 00"
+        ],
+        "tags": [
+            "Anfänger"
+        ]
+    },
+    "Querdiagonal": {
+        "parts": [],
+        "tags": [
+            "Raumeulen",
+            "Abfangjäger"
+        ]
+    },
+    "Stahlboden": {
+        "parts": [
+            "5F SLN 470 00",
+            "5F SLN 470 01",
+            "5F SLN 470 02",
+            "5F SLN 470 03",
+            "5F SLN 470 10",
+            "5F SLN 470 04",
+            "5F SLN 470 07"
+        ],
+        "tags": [
+            "Stahlis",
+            "Platten",
+            "Eisen",
+            "Bohlen",
+            "Schienen",
+            "Schrubbis"
+        ]
+    },
+    "Stahl-Holz-Abschlussboden / Stahlboden B19": {
+        "parts": [],
+        "tags": [
+            "Schmale Bohlen"
+        ]
+    },
+    "Stahl-Übergangsboden": {
+        "parts": [],
+        "tags": [
+            "Einläger"
+        ]
+    },
+    "Stahlboden Rohrauflage": {
+        "parts": [],
+        "tags": [
+            "Holländer, Krallenbelag"
+        ]
+    },
+    "Holzboden": {
+        "parts": [],
+        "tags": [
+            "Bohlen",
+            "Laden",
+            "Bretter",
+            "Platten",
+            "Gerüstbrett",
+            "Gerüstbrettl"
+        ]
+    },
+    "Kopfbeschlag Holzboden": {
+        "parts": [],
+        "tags": [
+            "Schuh"
+        ]
+    },
+    "Holzboden L74": {
+        "parts": [],
+        "tags": [
+            "Püppi's",
+            "Baby's"
+        ]
+    },
+    "Stahlboden L73": {
+        "parts": [],
+        "tags": [
+            "Püppi's, Baby's"
+        ]
+    },
+    "Alu-Rahmentafel": {
+        "parts": [],
+        "tags": [
+            "Tafeln",
+            "Deckel",
+            "Platten"
+        ]
+    },
+    "Durchstieg": {
+        "parts": [],
+        "tags": [
+            "Steiger",
+            "Leiter",
+            "Aufstieg",
+            "Treppe",
+            "Durchgang",
+            "Steigertafel"
+        ]
+    },
+    "Leitergang": {
+        "parts": [],
+        "tags": [
+            "Steiger",
+            "Leiter",
+            "Aufstieg",
+            "Treppe",
+            "Durchgang",
+            "Steigertafel"
+        ]
+    },
+    "Stahlmatte SL": {
+        "parts": [],
+        "tags": [
+            "Matte",
+            "Rahmen"
+        ]
+    },
+    "Rückengeländer": {
+        "parts": [
+            "5F SNN 050 04",
+            "5F SNN 050 03",
+            "5F SNN 050 02",
+            "5F SNN 050 01",
+            "5F SNN 050 00",
+            "5F SNN 050 08",
+            "5F SNN 050 05",
+            "5GSNN 050 07",
+            "5F SNN 050 06",
+            "00692 Rux"
+        ],
+        "tags": [
+            "Handläufe",
+            "Geländer",
+            "Stange",
+            "Wehr",
+            "Wea",
+            "Brustwehr",
+            "Rückenlehnen"
+        ]
+    },
+    "Doppelstirnseitengeländer": {
+        "parts": [
+            "5F SL7 120 00",
+            "5F SL1 120 00"
+        ],
+        "tags": [
+            "Affenschaukel",
+            "Dummenfang",
+            "Absperrer",
+            "Durchläufer",
+            "N'Auslatscher",
+            "Ochsenauge",
+            "Offnschaugl",
+            "Abschluss",
+            "Endwehr",
+            "Zuhälter",
+            "Meisterbremse"
+        ]
+    },
+    "Bordbrett": {
+        "parts": [
+            "5F SNN 140 04",
+            "5F SNN 140 00",
+            "5F SNN 140 01",
+            "5F SNN 140 02",
+            "5F SNN 140 03",
+            "5F SNN 140 05",
+            "5F SNN 140 07",
+            "5F SNN 140 ST 100",
+            "5F SNN 140 06",
+            "5F SNN 140 ST 050"
+        ],
+        "tags": [
+            "Fußbretter",
+            "Fußwehr",
+            "Fuaßwea"
+        ]
+    },
+    "Stirnbordbrett SL": {
+        "parts": [
+            "5F SL7 150 00",
+            "5F SL1 150 00"
+        ],
+        "tags": [
+            "Stirnis"
+        ]
+    },
+    "Stahl-Geländerpfosten": {
+        "parts": [
+            "000245 MJ",
+            "5F SNN 126 00",
+            "5F SNN 110 00",
+            "5F SNN 120 00"
+        ],
+        "tags": [
+            "i"
+        ]
+    },
+    "Stahl-Geländerpfosten mit Bordbretthalter": {
+        "parts": [
+            "5F SNN 126 00",
+            "5F SNN 120 00"
+        ],
+        "tags": [
+            "i mit Pin",
+            "Flöte"
+        ]
+    },
+    "Stahl-Geländerstütze": {
+        "parts": [],
+        "tags": [
+            "kleines L",
+            "Winkel",
+            "Eunuche"
+        ]
+    },
+    "Stahl-Stirnseiten-Geländerrahmen": {
+        "parts": [],
+        "tags": [
+            "Endgeländer"
+        ]
+    },
+    "Fußplatten": {
+        "parts": [],
+        "tags": [
+            "Spindel",
+            "Anfänger",
+            "Füße",
+            "Fuß",
+            "Schuh",
+            "Schua"
+        ]
+    },
+    "Gewindefußplatten": {
+        "parts": [
+            "5F SOG 590 02",
+            "5F SOG 590 03",
+            "5F SOG 590 06",
+            "5F SOG 590 05",
+            "5F SOG 590 07",
+            "5F SOG 590 08",
+            "5F SOG 590 04",
+            "00361 Rux",
+            "5F SOG 600 00"
+        ],
+        "tags": [
+            "Spindel",
+            "Anfänger",
+            "Füße",
+            "Fuß",
+            "Schuh",
+            "Schua"
+        ]
+    },
+    "Schutzgitterstütze SL": {
+        "parts": [
+            "5F SL1 050 00",
+            "5F SL1 050 01",
+            "5F SL7 370 00"
+        ],
+        "tags": [
+            "großes L"
+        ]
+    },
+    "Seitenschutznetze": {
+        "parts": [],
+        "tags": [
+            "Dachdeckernetz",
+            "Dachfangnetz"
+        ]
+    },
+    "Konsole": {
+        "parts": [],
+        "tags": [
+            "Ausleger",
+            "Traversen",
+            "Winkel"
+        ]
+    },
+    "Traverse für Zwischenstandshöhen": {
+        "parts": [
+            "5F SL1 160 00",
+            "5F SL7 160 00",
+            "5F SL7 160 ST 1"
+        ],
+        "tags": [
+            "Einschrauber"
+        ]
+    },
+    "Stahl-Belagtraverse SL": {
+        "parts": [],
+        "tags": [
+            "Igel",
+            "Aufschrauber"
+        ]
+    },
+    "Rohrverbinder für Gitterträger": {
+        "parts": [],
+        "tags": [
+            "Flöten"
+        ]
+    },
+    "Rohrverbinder für U-Doppelriegel": {
+        "parts": [],
+        "tags": [
+            "Pisser"
+        ]
+    },
+    "Rohrverbinder mit Halbkupplung": {
+        "parts": [
+            "5F MPP 100 00"
+        ],
+        "tags": [
+            "Pisser"
+        ]
+    },
+    "Gitterträger Riegel": {
+        "parts": [
+            "5F SL7 665 00",
+            "5F SL7 665 01"
+        ],
+        "tags": [
+            "Faulenzer"
+        ]
+    },
+    "Alu-Podesttreppe": {
+        "parts": [],
+        "tags": [
+            "Leiter",
+            "Aufstieg"
+        ]
+    },
+    "Kupplungen": {
+        "parts": [
+            "5F KUP 100 10",
+            "5F KUP 200 19",
+            "5F KUP 175 01",
+            "5F KUP 175 00",
+            "4700022 LAYHER",
+            "4702022 LAYHER",
+            "Amerik.Ausfg.",
+            "5FKUP56000",
+            "5F KUP 500 01",
+            "5F KUP 380 00",
+            "5F KUP 650 01",
+            "5F KUP 100 ST 3838",
+            "5F KUP 100 12",
+            "00451 Rux"
+        ],
+        "tags": [
+            "Schellen"
+        ]
+    },
+    "Normalkupplung": {
+        "parts": [
+            "5F KUP 100 10",
+            "4700022 LAYHER"
+        ],
+        "tags": [
+            "Kreuzkupplung",
+            "Feste Kupplung",
+            "Kreuzschelle",
+            "starre Kupplung"
+        ]
+    },
+    "Drehkupplung": {
+        "parts": [
+            "5F KUP 200 19",
+            "4702022 LAYHER",
+            "Amerik.Ausfg."
+        ],
+        "tags": [
+            "Dreher",
+            "Drehschelle"
+        ]
+    },
+    "Kippstiftkupplung": {
+        "parts": [
+            "5F KUP 500 01"
+        ],
+        "tags": [
+            "Nasenschelle",
+            "Fingerkupplung"
+        ]
+    },
+    "Distanzkupplung": {
+        "parts": [
+            "5F KUP 175 01",
+            "5F KUP 175 00"
+        ],
+        "tags": [
+            "Knochen",
+            "Handschellen"
+        ]
+    },
+    "Rohrverbinder geschmiedet": {
+        "parts": [
+            "5F DIV 100 01"
+        ],
+        "tags": [
+            "Dorne",
+            "Torpedos",
+            "Zigarren"
+        ]
+    },
+    "Gerüsthalter": {
+        "parts": [
+            "5F SNN 240 02",
+            "5F SNN 240 00",
+            "5F SNN 240 ST 100",
+            "5F SNN 240 05",
+            "5F SNN 240 10",
+            "5F SNN 240 ST 040",
+            "5F SNN 240 09"
+        ],
+        "tags": [
+            "Wandarme",
+            "Absteifer",
+            "Klemme",
+            "Anker",
+            "Halter",
+            "Arme",
+            "Festmacher"
+        ]
+    },
+    "Gerüsthalter mit Gabel": {
+        "parts": [
+            "5F SLN 250 00"
+        ],
+        "tags": [
+            "Schnellanker"
+        ]
+    },
+    "Ringschraube": {
+        "parts": [
+            "5F DIV 001 10",
+            "5F DIV 001 09",
+            "5F DIV 001 08",
+            "5F DIV 001 07",
+            "5F DIV 001 06"
+        ],
+        "tags": [
+            "Schrauben",
+            "Ösen"
+        ]
+    },
+    "Spreizdübel": {
+        "parts": [
+            "5F DIV 001 05"
+        ],
+        "tags": [
+            "Dübi's"
+        ]
+    },
+    "Abdeckkappe für Dübellöcher": {
+        "parts": [
+            "5F DIV 001 04"
+        ],
+        "tags": [
+            "Kappen"
+        ]
+    },
+    "Fallstecker": {
+        "parts": [
+            "5F BIE 008 05"
+        ],
+        "tags": [
+            "Schweine-Schwänze"
+        ]
+    },
+    "Einmalbinder-Kunststoff": {
+        "parts": [
+            "ZB BEF 0001"
+        ],
+        "tags": [
+            "Strapse"
+        ]
+    },
+    "Palette": {
+        "parts": [
+            "15269",
+            "ST STP 02 001L",
+            "ST STP 02 001K",
+            "005614 MJ",
+            "ST GEB 01 140"
+        ],
+        "tags": [
+            "Barille",
+            "Palette"
+        ]
+    },
+    "Vertikalstiel": {
+        "parts": [
+            "5F MPP 010 00",
+            "5F MPP 010 01",
+            "5F MPP 010 02",
+            "5F MPP 010 03",
+            "5F MPP 010 04",
+            "5F MPP 010 05",
+            "5F MPP 010 06"
+        ],
+        "tags": [
+            "Ständer",
+            "Steher",
+            "Schtenda"
+        ]
+    },
+    "Riegel 15": {
+        "parts": [],
+        "tags": [
+            "Schmetterling"
+        ]
+    },
+    "Doppelriegel U-Auflage": {
+        "parts": [],
+        "tags": [
+            "Schiffe",
+            "Boote",
+            "U-Boote"
+        ]
+    },
+    "Doppelriefel SL-Auflage": {
+        "parts": [],
+        "tags": [
+            "Kämme",
+            "Schiffe",
+            "Boote",
+            "Schwerlastriegel"
+        ]
+    }
+}

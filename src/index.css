@@ -1,0 +1,223 @@
+* {
+  /* font-size: 3vw; */
+  /* font-size: 18px; */
+}
+
+body {
+  /* ###########     Styling     ########### */
+
+  /* Verhindern, dass Seiteninhalt unter die Navbar rutscht (da fixed-top) */
+  /* padding-top: 80px; */
+  min-height: 100vh;
+  display: flex;
+
+  /* ######### Touch-Einstellungen ######### */
+
+  /* Safari */
+  -webkit-touch-callout: none;
+  /* Chrome */
+  /* -webkit-user-select: none; */
+  /* Firefox */
+  /* -moz-user-select: none; */
+  /* Internet Explorer/Edge */
+  /* -ms-user-select: none; */
+  /* user-select: none; */
+
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+.virtualizedListItem:hover {
+  background-color: #eeeeee99;
+}
+
+
+#root {
+  width: 100%;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.table {
+  /* display: block; /* Bringt die Tabellen dazu, nicht die volle Breite auszunutzen */
+  overflow-x: auto;
+  white-space: normal;
+}
+
+table tr:hover td {
+  /* Der Cursor soll sich nur beim Tabelleninhalt
+   und nicht auch beim Tabellenheader verändern */
+  /* cursor: pointer; */
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.tableFixHead {
+  overflow-y: auto;
+  height: calc(100vh - 220px);
+}
+
+.tableFixHead thead th {
+  position: sticky;
+  top: 0;
+}
+
+.tableFixHeadLoad {
+  overflow-y: auto;
+  height: calc(100vh - 255px);
+}
+
+.tableFixHeadLoad thead th {
+  position: sticky;
+  top: 0;
+}
+
+.headerfont {
+  font-size: 3em;
+  color: rgb(0, 0, 0, 50%);
+}
+
+.carousel-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  margin: auto;
+}
+
+.dot {
+  height: 32px;
+  width: 32px;
+}
+
+.small-dot {
+  height: 16px;
+  width: 16px;
+}
+
+input[type=number] {
+  max-width: 70px;
+  /* min-width: 120px; */
+  /* font-size: 18pt; */
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+
+/*  */
+.centertext {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.carousel,
+.carousel-inner,
+.carousel-item {
+  height: 100%
+}
+
+.modal {
+  /* z-index of nav-bar of MUI has an z-index of 1300
+  Damit der Modal-Dialog darüber angezeigt wird, muss der z-index
+  höher sein. (+1 für Backrop Shadow) */
+  z-index: 1302 !important;
+}
+
+.modal-shadow {
+  z-index: 1301 !important;
+}
+
+.swal2-container {
+  z-index: 1303 !important;
+}
+
+/* Drawer hat einen z-index von 1200. Top-Nav soll über 
+ dem Drawer angezeigt werden. */
+.top-navigation {
+  z-index: 1201 !important;
+}
+
+/* Drawer hat einen z-index von 1200. Top-Nav soll über 
+ dem Drawer angezeigt werden. */
+.bottom-navigation {
+  z-index: 1201;
+}
+
+.MuiFab-root {
+  z-index: 1201 !important;
+}
+
+/* Checklist Status Colors */
+
+.checklist__part__complete {
+  background-color: #d5f5e3 !important;
+}
+
+.checklist__part__status__added {
+  background-color: #198754 !important;
+}
+
+.checklist__part__status__modified {
+  background-color: #ffc107 !important;
+}
+
+.checklist__part__status__deleted {
+  background-color: #dc3545 !important;
+}
+
+.checklist__part__status__deleted-tr {
+  text-decoration-line: line-through !important;
+}
+
+/* LoadingLists Status Colors */
+
+.loadingList__part__complete {
+  background-color: #d5f5e3 !important;
+}
+
+.loadingList__part__status__added {
+  background-color: #198754 !important;
+}
+
+.loadingList__part__status__modified {
+  background-color: #ffc107 !important;
+}
+
+.loadingList__part__status__deleted {
+  background-color: #dc3545 !important;
+}
+
+.loadingList__part__status__deleted-tr {
+  text-decoration-line: line-through !important;
+}
+
+/* DeliveryNote Status Colors */
+
+.deliveryNote__part__complete {
+  background-color: #d5f5e3 !important;
+}
+
+.deliveryNote__part__status__added {
+  background-color: #198754 !important;
+}
+
+.deliveryNote__part__status__modified {
+  background-color: #ffc107 !important;
+}
+
+.deliveryNote__part__status__deleted {
+  background-color: #dc3545 !important;
+}
+
+.deliveryNote__part__status__deleted-tr {
+  text-decoration-line: line-through !important;
+}
