@@ -9,9 +9,7 @@ import {
 } from "../../app/api/api";
 import { getParts, partsUrlEndpoint } from '../../app/api/partsApi';
 import { ROLES } from '../../config/roles';
-import { getLoadingLists, loadingListsUrlEndpoint } from '../../app/api/loadingListsApi';
 import { deliveryNotesUrlEndpoint, getDeliveryNotes } from '../../app/api/deliveryNotesApi';
-import { getWorkOrders, workOrdersUrlEndpoint } from '../../app/api/workOrdersApi';
 
 
 const decodeUserFromToken = (token) => {
@@ -62,9 +60,7 @@ export default function useProvideAuth() {
             console.log("Login#Preloading Items...")
             try {
                 preload(partsUrlEndpoint, getParts);
-                preload(loadingListsUrlEndpoint, getLoadingLists);
                 preload(deliveryNotesUrlEndpoint, getDeliveryNotes);
-                preload(workOrdersUrlEndpoint, getWorkOrders);
             } catch (error) {
                 console.log("Error while preloading...");
                 console.log(error);

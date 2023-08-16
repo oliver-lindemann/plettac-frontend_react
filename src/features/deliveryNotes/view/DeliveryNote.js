@@ -24,7 +24,6 @@ import { ArchiveOutlined, Download, DrawOutlined, PrintOutlined } from '@mui/ico
 import { BsPencilFill } from 'react-icons/bs';
 import { ROLES } from '../../../config/roles';
 import useSignatureDialog from '../../../hooks/dialogs/useSignatureDialog';
-import { autoPrint, generatePDF } from '../pdf/GeneratePdfGmw';
 
 import FileSaver from 'file-saver';
 import { Document, Page, pdfjs } from 'react-pdf';
@@ -101,9 +100,7 @@ const DeliveryNote = () => {
     }
 
     const generatePdfFile = async (deliveryNote) => {
-        return await (deliveryNote.issuingCompany === PLETTAC
-            ? generatePlettacPDF(deliveryNote)
-            : generatePDF(deliveryNote));
+        return await generatePlettacPDF(deliveryNote);
     }
 
     const generateAndSetPdfFile = (deliveryNote) => {
@@ -311,7 +308,7 @@ const DeliveryNote = () => {
         setTimeout(async () => {
             try {
                 const pdf = pdfFile || (await generatePdfFile(deliveryNote));
-                autoPrint(pdf);
+                // autoPrint(pdf);
                 FileSaver.saveAs(pdf.output('blob'), `Lieferschein ${deliveryNote.customer?.name} - ${formatDate(deliveryNote.dateOfCreation)}.pdf`);
             } finally {
                 setIsWaitingForPdf(false)

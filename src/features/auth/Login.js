@@ -93,7 +93,7 @@ const Login = () => {
                         src={logo}
                         height="150"
                         className="d-inline-block align-top"
-                        alt="GMW logo"
+                        alt="Plettac logo"
                     />
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 5 }}>
                         {errMsg ? <Alert severity='warning' className="col-12">{errMsg}</Alert> : null}
