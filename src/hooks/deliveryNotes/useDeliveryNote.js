@@ -13,7 +13,7 @@ const useDeliveryNote = (deliveryNoteId) => {
 
     useEffect(() => {
         setDeliveryNote(deliveryNotes?.find(deliveryNote => deliveryNote._id === deliveryNoteId));
-    }, [deliveryNotes])
+    }, [deliveryNotes, deliveryNoteId])
 
     return {
         deliveryNote,

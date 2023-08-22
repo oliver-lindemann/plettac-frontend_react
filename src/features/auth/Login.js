@@ -5,7 +5,7 @@ import { useSnackbar } from 'notistack';
 
 import useAuth from '../../hooks/auth/useAuth';
 
-import logo from '../../images/PlettacAssco_Logo.jpg';
+import logo from '../../images/PlettacAssco_Logo_small.jpg';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 const welcomImage = 'https://werdermann.com/wp-content/uploads/2019/09/gmw-geruestbau-werdermann-banner002.jpg';
 
@@ -93,7 +93,7 @@ const Login = () => {
                         src={logo}
                         height="150"
                         className="d-inline-block align-top"
-                        alt="GMW logo"
+                        alt="Plettac logo"
                     />
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 5 }}>
                         {errMsg ? <Alert severity='warning' className="col-12">{errMsg}</Alert> : null}

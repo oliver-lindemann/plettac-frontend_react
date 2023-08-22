@@ -1,12 +1,11 @@
-import { Alert, Card, CardContent, CircularProgress, Divider, Grid, Tooltip, Typography } from '@mui/material'
-import { formatDate } from '../../../utils/StringUtils'
-import UserAvatar from '../../../components/utils/UserAvatar'
 import { FileDownloadOutlined, FileUploadOutlined, MonetizationOnOutlined, QueryBuilderOutlined } from '@mui/icons-material'
+import { Alert, Card, CardContent, CircularProgress, Divider, Grid, Tooltip, Typography } from '@mui/material'
+import UserAvatar from '../../../components/utils/UserAvatar'
+import { DELIVERY_NOTE_LOGISTICS, formatDeliveryNoteNumber, formatNumber } from '../../../config/deliveryNote'
 import { LIST_STATUS_ICONS_MOBILE, LIST_STATUS_LANG } from '../../../config/list'
-import { DELIVERY_NOTE_LOGISTICS, GMW, PLETTAC, formatDeliveryNoteNumber } from '../../../config/deliveryNote'
+import { formatDate } from '../../../utils/StringUtils'
 
-import GMW_LOGO from '../../../images/GMW_Logo_Web.jpg'
-import PLETTAC_LOGO from '../../../images/PlettacAssco_Logo_small.jpg'
+import { Link } from 'react-router-dom'
 
 
 function getIconOfStatus(status) {
@@ -36,10 +35,7 @@ const DeliveryNoteInformation = ({ deliveryNote, switchToPreview }) => {
             <div className='d-flex justify-content-between align-content-center'>
                 <div>
                     <Typography variant='h5'>
-                        Lieferschein {deliveryNote.issuingCompany === PLETTAC
-                            // Füge Lieferscheinnummer hinzu. Formatiert als 5-Digits LS-#####
-                            ? ` - #${formatDeliveryNoteNumber(deliveryNote)}`
-                            : ''}
+                        Lieferschein {` - #${formatDeliveryNoteNumber(deliveryNote)}`} {deliveryNote.logistics === DELIVERY_NOTE_LOGISTICS.CANCELLATION && <> - Storno zu #<Link to={`/deliveryNotes/${deliveryNote.relatedDeliveryNote?._id}`}>{formatNumber(deliveryNote.relatedDeliveryNote?.uniqueNumber)}</Link></>}
                     </Typography>
                     <Typography variant='subtitle2'>
                         {formatDate(deliveryNote.createdAt)} {deliveryNote.dateOfIssue ? ` - Ausgabe: ${formatDate(deliveryNote.dateOfIssue)}` : null}
@@ -55,18 +51,6 @@ const DeliveryNoteInformation = ({ deliveryNote, switchToPreview }) => {
             </div>
 
             <Divider className='mt-2 mb-2' />
-
-
-            <div className='d-flex justify-content-between align-items-center mb-3'>
-                <Typography>Lieferschein als {deliveryNote.issuingCompany === PLETTAC ? 'Plettac' : GMW}</Typography>
-                <img
-                    src={deliveryNote.issuingCompany === PLETTAC ? PLETTAC_LOGO : GMW_LOGO}
-                    height="40"
-                    className="d-inline-block align-top"
-                    alt="Issuing Company Logo"
-                />
-            </div>
-
 
             {
                 (!deliveryNote.signatures?.customer || !deliveryNote.signatures.warehouseWorker)

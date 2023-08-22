@@ -1,6 +1,6 @@
 import { baseAuthApi } from './api';
 
-export const deliveryNotesUrlEndpoint = '/deliveryNotes';
+export const deliveryNotesUrlEndpoint = '/plettac/deliveryNotes';
 
 export const getDeliveryNotes = async (url) => {
     const response = await baseAuthApi.get(url);

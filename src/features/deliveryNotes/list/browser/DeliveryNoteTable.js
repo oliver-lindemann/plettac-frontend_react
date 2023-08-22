@@ -67,7 +67,7 @@ const DeliveryNoteTable = ({ deliveryNotes }) => {
                         deliveryNotes.length > 0
                             ? (deliveryNotes.map((deliveryNote, index) =>
                                 <DeliveryNoteItem
-                                    key={index}
+                                    key={deliveryNote._id}
                                     deliveryNote={deliveryNote}
                                     isChangingVisibility={isChangingVisibility}
                                     handleChangeDeliveryNoteVisible={handleChangeDeliveryNoteVisible}
