@@ -5,7 +5,7 @@ import { useSnackbar } from 'notistack';
 
 import useAuth from '../../hooks/auth/useAuth';
 
-import logo from '../../images/PlettacAssco_Logo.jpg';
+import logo from '../../images/PlettacAssco_Logo_small.jpg';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 const welcomImage = 'https://werdermann.com/wp-content/uploads/2019/09/gmw-geruestbau-werdermann-banner002.jpg';
 
