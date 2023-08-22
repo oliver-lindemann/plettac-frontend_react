@@ -75,6 +75,11 @@ baseAuthApi.interceptors.response.use(response => response, async (error) => {
 
 export const authUrlEndpoint = '/auth';
 
+export const updateTokens = ({ accessToken: at, refreshToken: rt }) => {
+    accessToken = at;
+    refreshToken = rt;
+}
+
 export const login = async (credentials) => {
     const response = await baseApi.post(`${authUrlEndpoint}/login`, credentials);
     refreshToken = response.data?.refreshToken;

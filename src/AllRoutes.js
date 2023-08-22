@@ -19,6 +19,7 @@ import CenteredPulseLoader from './components/loading/CenteredPulseLoader';
 import useAuth from './hooks/auth/useAuth';
 import { TOP_NAV_HEIGHT } from './features/navigation/TopNav';
 import Changelog from './features/changelog/Changelog';
+import Redirect from './features/auth/Redirect';
 
 // Lazy Loading
 
@@ -50,6 +51,7 @@ const AllRoutes = () => {
           <Route element={<PersistLogin />}>
             <Route path='/' element={<StartPage />} />
             <Route path='/login' element={<Login />} />
+            <Route path='/redirect' element={<Redirect />} />
 
             <Route element={<RequireAuth allowedRoles={[ROLES.Standard]} />}>
               <Route element={<Changelog />}>

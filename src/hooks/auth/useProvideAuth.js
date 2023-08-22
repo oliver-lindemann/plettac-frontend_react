@@ -103,5 +103,5 @@ export default function useProvideAuth() {
     useEffect(() => { console.log("setIsLogin"); console.log(user); setIsLogin(Boolean(user)) }, [user])
 
 
-    return { user, login, refresh, logout, isLogin, isLoading };
+    return { user, login, refresh, logout, isLogin, isLoading, updateUser };
 }
