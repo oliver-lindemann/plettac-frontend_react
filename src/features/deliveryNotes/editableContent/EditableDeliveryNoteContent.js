@@ -27,7 +27,7 @@ import { deDE } from '@mui/x-date-pickers/locales'
 import { IoMdArrowRoundForward } from 'react-icons/io'
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from 'react-icons/md'
 
-import { DELIVERY_NOTE_LOGISTICS, DELIVERY_NOTE_TYPE, PLETTAC } from '../../../config/deliveryNote'
+import { DELIVERY_NOTE_LOGISTICS, DELIVERY_NOTE_TYPE } from '../../../config/deliveryNote'
 import { LIST_STATUS, LIST_STATUS_LANG } from '../../../config/list'
 
 import { dayjsUTC, getDayjsWithoutTime } from '../../../utils/DateUtils'
@@ -78,20 +78,19 @@ const EditableDeliveryNoteContent = ({ deliveryNote, onSaveButtonClicked }) => {
     const [createdCustomer, setCreatedCustomer] = useState(null);
 
     const {
-        value: issuingCompany,
-        setValue: setIssuingCompany,
-        isTouched: issuingCompanyIsTouched,
-        setIsTouched: setIssuingCompanyIsTouched,
-        isValid: issuingCompanyIsValid,
-        hasError: issuingCompanyHasError,
-        valueChangeHandler: issuingCompanyChangeHandler,
-        inputBlurHandler: issuingCompanyBlurHandler,
+        value: relatedDeliveryNote,
+        setValue: setRelatedDeliveryNote,
+        isTouched: relatedDeliveryNoteIsTouched,
+        setIsTouched: setRelatedDeliveryNoteIsTouched,
+        isValid: relatedDeliveryNoteIsValid,
+        hasError: relatedDeliveryNoteHasError,
+        valueChangeHandler: relatedDeliveryNoteChangeHandler,
+        inputBlurHandler: relatedDeliveryNoteBlurHandler,
     } = useInput({
-        defaultValue: PLETTAC,
-        initialValue: deliveryNote?.issuingCompany || PLETTAC,
-        validateValue: (value) => value?.trim() !== ''
+        defaultValue: '',
+        initialValue: deliveryNote?.relatedDeliveryNote,
+        validateValue: (value) => deliveryNote?.logistics === DELIVERY_NOTE_LOGISTICS.CANCELLATION ? value !== null : true
     });
-
 
     const {
         value: uniqueNumber,
@@ -106,7 +105,7 @@ const EditableDeliveryNoteContent = ({ deliveryNote, onSaveButtonClicked }) => {
         defaultValue: 0,
         initialValue: deliveryNote?.uniqueNumber,
         // Do only validate unique number if delivery note already created and is PLETTAC
-        validateValue: (value) => deliveryNote?._id && deliveryNote.issuingCompany === PLETTAC ? value > 0 : true
+        validateValue: (value) => deliveryNote?._id ? value > 0 : true
     });
 
     const {
@@ -214,7 +213,6 @@ const EditableDeliveryNoteContent = ({ deliveryNote, onSaveButtonClicked }) => {
     });
 
     const [logistics, setLogistics] = useState(deliveryNote?.logistics || DELIVERY_NOTE_LOGISTICS.OUTBOUND);
-    const [type, setType] = useState(deliveryNote?.type || DELIVERY_NOTE_TYPE.SALE);
     const [dateOfIssue, setDateOfIssue] = useState(deliveryNote?.dateOfIssue ? dayjsUTC(deliveryNote.dateOfIssue) : dayjsUTC());
     const [signatures, setSignatures] = useState(deliveryNote?.signatures)
 
@@ -229,7 +227,7 @@ const EditableDeliveryNoteContent = ({ deliveryNote, onSaveButtonClicked }) => {
     const isFormValid = () => {
         return customerIsValid
             && personInChargeIsValid
-            && issuingCompanyIsValid
+            && relatedDeliveryNoteIsValid
             && constructionProjectIsValid
             && licensePlateIsValid
             && warehouseWorkerIsValid
@@ -243,12 +241,11 @@ const EditableDeliveryNoteContent = ({ deliveryNote, onSaveButtonClicked }) => {
             ...deliveryNote,
             customer: customers?.find(c => c.name === customer)?._id,
             uniqueNumber,
-            issuingCompany,
+            relatedDeliveryNote,
             personInCharge,
             warehouseWorker,
             licensePlate,
             logistics,
-            type: logistics === DELIVERY_NOTE_LOGISTICS.OUTBOUND ? type : null,
             constructionProject,
             signatures,
             dateOfIssue,
@@ -304,12 +301,6 @@ const EditableDeliveryNoteContent = ({ deliveryNote, onSaveButtonClicked }) => {
         }
     };
 
-    const handleTypeChanged = (e, newType) => {
-        if (newType !== null) {
-            setType(newType);
-        }
-    };
-
     const handleNextTab = (e) => {
         e.preventDefault();
 
@@ -335,7 +326,6 @@ const EditableDeliveryNoteContent = ({ deliveryNote, onSaveButtonClicked }) => {
         setConstructionProject(updatedDeliveryNote.constructionProject);
         setLicensePlate(updatedDeliveryNote.licensePlate);
         setLogistics(updatedDeliveryNote.logistics);
-        setType(updatedDeliveryNote.type);
         updateDeliveryNoteParts(updatedDeliveryNote.parts)
         updateDeliveryNoteCustomParts(updatedDeliveryNote.customParts)
     }
@@ -431,7 +421,7 @@ const EditableDeliveryNoteContent = ({ deliveryNote, onSaveButtonClicked }) => {
             }
 
             {
-                (deliveryNote?._id && issuingCompany === PLETTAC) && (
+                deliveryNote?._id && (
                     <TextField
                         className='mt-3'
 
@@ -699,24 +689,6 @@ const EditableDeliveryNoteContent = ({ deliveryNote, onSaveButtonClicked }) => {
                         <FileDownloadOutlined /><div className='mx-1' /> Rücklieferung
                     </ToggleButton>
                 </ToggleButtonGroup>
-                {
-                    logistics === DELIVERY_NOTE_LOGISTICS.OUTBOUND ?
-                        (
-                            <>
-                                <div className='m-1' />
-                                <ToggleButtonGroup
-                                    value={type}
-                                    exclusive
-                                    fullWidth
-                                    onChange={handleTypeChanged}
-                                >
-                                    <ToggleButton value={DELIVERY_NOTE_TYPE.SALE} color="secondary" >
-                                        <MonetizationOnOutlined /><div className='mx-1' /> Verkauf
-                                    </ToggleButton>
-                                </ToggleButtonGroup>
-                            </>
-                        ) : null
-                }
             </div>
 
             <div className='mt-3'>

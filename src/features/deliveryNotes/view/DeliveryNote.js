@@ -3,6 +3,7 @@ import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detec
 import { useNavigate, useParams } from 'react-router-dom';
 
 import {
+    addDeliveryNote,
     downloadExcelFile,
     getHistory,
     updateDeliveryNote
@@ -20,7 +21,7 @@ import DefaultContainer from '../../../components/layout/DefaultContainer';
 import FloatingButton from '../../../components/layout/FloatingButton';
 import CenteredPulseLoader from '../../../components/loading/CenteredPulseLoader';
 
-import { ArchiveOutlined, Download, DrawOutlined, PrintOutlined } from '@mui/icons-material';
+import { ArchiveOutlined, DoNotDisturbOutlined, Download, DrawOutlined, PrintOutlined } from '@mui/icons-material';
 import { BsPencilFill } from 'react-icons/bs';
 import { ROLES } from '../../../config/roles';
 import useSignatureDialog from '../../../hooks/dialogs/useSignatureDialog';
@@ -37,12 +38,13 @@ import { TOP_NAV_HEIGHT } from '../../navigation/TopNav';
 // Lazy Load - only Admin Feature
 // const DeliveryNoteHistory = lazy(() => import('../history/DeliveryNoteHistory')); // Lazy
 import { useSnackbar } from 'notistack';
-import { GMW, PLETTAC } from '../../../config/deliveryNote';
+import { DELIVERY_NOTE_LOGISTICS } from '../../../config/deliveryNote';
 import { LIST_STATUS } from '../../../config/list';
 import ListPartsTableView from '../../lists/ListPartsTableView';
 import DeliveryNoteHistory from '../../lists/history/ListHistory'; // lazy won't work with slider -> rerenders complete 
 import LoadList from '../../lists/load/LoadList';
 import { generatePlettacPDF } from '../pdf/GeneratePdfPlettac';
+import { useConfirmDialog } from '../../../hooks/dialogs/useConfirm';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -56,9 +58,12 @@ const DeliveryNote = () => {
     } = useDeliveryNote(id);
     const { enqueueSnackbar } = useSnackbar();
 
+    console.log("ID: ", id, deliveryNote);
+
     const navigate = useNavigate();
 
     const [openSignatureDialog, SignatureDialog] = useSignatureDialog();
+    const [openConfirmDialog, ConfirmDialog] = useConfirmDialog();
 
     const [swiper, setSwiper] = useState(null);
     const [tabIndex, setTabIndex] = useState(0);
@@ -77,9 +82,6 @@ const DeliveryNote = () => {
     let canLoad = false;
 
     const checkIfAllFieldsSet = () => {
-        if (deliveryNote?.issuingCompany === GMW) {
-            return true;
-        }
 
         const allRequiredFieldsSet = deliveryNote.uniqueNumber > 0
             && deliveryNote.customer !== null
@@ -99,10 +101,37 @@ const DeliveryNote = () => {
         return allRequiredFieldsSet;
     }
 
-    const createStorno = async (deliveryNote) => {
+    const createStorno = () => {
 
+        console.log(DELIVERY_NOTE_LOGISTICS);
+        const onConfirm = async () => {
 
+            console.log(DELIVERY_NOTE_LOGISTICS.CANCELLATION);
 
+            const deliveryNoteCopy = {
+                ...deliveryNote,
+                logistics: DELIVERY_NOTE_LOGISTICS.CANCELLATION,
+                relatedDeliveryNote: deliveryNote._id,
+                status: LIST_STATUS.DONE
+            };
+            const updatedDeliveryNote = {
+                ...deliveryNote,
+                status: LIST_STATUS.DONE
+            }
+
+            console.log(deliveryNoteCopy);
+            console.log(updatedDeliveryNote);
+
+            const resultAdd = await addDeliveryNote(deliveryNoteCopy);
+            const resultUpdate = await updateDeliveryNote(updatedDeliveryNote);
+            console.log(resultAdd, resultUpdate);
+        }
+
+        openConfirmDialog({
+            title: 'Auftrag/Lieferschein stornieren?',
+            content: 'Soll dieser Lieferschein wirklich storniert werden? Dies kann nicht rückgängig gemacht werden.',
+            onConfirm
+        });
     }
 
     const generatePdfFile = async (deliveryNote) => {
@@ -442,11 +471,27 @@ const DeliveryNote = () => {
                 Archivieren
             </Button>
         )
+
+        if (deliveryNote?.logistics !== DELIVERY_NOTE_LOGISTICS.CANCELLATION) {
+            actionButtons.push(
+                <Button
+                    color='error'
+                    variant='outlined'
+                    size={isMobile ? 'large' : 'medium'}
+                    fullWidth
+                    onClick={createStorno}
+                    startIcon={<DoNotDisturbOutlined />}
+                >
+                    Stornieren
+                </Button>
+            )
+        }
     }
 
     return (
         <>
             {SignatureDialog}
+            {ConfirmDialog}
 
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
