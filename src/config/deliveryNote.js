@@ -31,11 +31,10 @@ export const DELIVERY_NOTE_LOGISTICS_ICONS = {
 }
 
 export const DELIVERY_NOTE_LOGISTICS_ICONS_TEXT = {
-    INBOUND: <Tooltip title="Rücklieferung"><div classname="d-flex gap-2 align-items-center"><FileDownloadOutlined color='success' /> {DELIVERY_NOTE_LOGISTICS_LANG[DELIVERY_NOTE_LOGISTICS.INBOUND]}</div></Tooltip>,
-    OUTBOUND: <Tooltip title="Ausgabe"><div classname="d-flex gap-2 align-items-center"><FileUploadOutlined color='error' /> {DELIVERY_NOTE_LOGISTICS_LANG[DELIVERY_NOTE_LOGISTICS.OUTBOUND]}</div></Tooltip>,
-    CANCELLATION: <Tooltip title="Stornierung"><div classname="d-flex gap-2 align-items-center"><DoNotDisturbOutlined color='error' /> {DELIVERY_NOTE_LOGISTICS_LANG[DELIVERY_NOTE_LOGISTICS.CANCELLATION]}</div></Tooltip>
+    INBOUND: <Tooltip title="Rücklieferung"><div className="d-flex gap-2 align-items-center"><FileDownloadOutlined color='success' />{DELIVERY_NOTE_LOGISTICS_LANG[DELIVERY_NOTE_LOGISTICS.INBOUND]}</div></Tooltip>,
+    OUTBOUND: <Tooltip title="Ausgabe"><div className="d-flex gap-2 align-items-center"><FileUploadOutlined color='error' />{DELIVERY_NOTE_LOGISTICS_LANG[DELIVERY_NOTE_LOGISTICS.OUTBOUND]}</div></Tooltip>,
+    CANCELLATION: <Tooltip title="Stornierung"><div className="d-flex gap-2 align-items-center"><DoNotDisturbOutlined color='error' />{DELIVERY_NOTE_LOGISTICS_LANG[DELIVERY_NOTE_LOGISTICS.CANCELLATION]}</div></Tooltip>
 }
-
 
 export const formatNumber = (number) => {
     const formattedNumber = (+number).toLocaleString('de-DE', {
