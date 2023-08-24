@@ -1,19 +1,12 @@
 import { useNavigate } from "react-router-dom";
 
-import { DoNotDisturbOutlined, FileDownloadOutlined, FileUploadOutlined, MonetizationOnOutlined, QueryBuilderOutlined } from "@mui/icons-material";
+import { DoNotDisturbOutlined, FileDownloadOutlined, FileUploadOutlined } from "@mui/icons-material";
 import { TableCell, TableRow, Tooltip, Typography } from "@mui/material";
 
-import AdditionalListInformationCells from "../../../lists/table/AdditionalListInformationCells";
 import CenteredPulseLoader from "../../../../components/loading/CenteredPulseLoader";
 import UserAvatar from "../../../../components/utils/UserAvatar";
-
-import { DELIVERY_NOTE_LOGISTICS, formatDeliveryNoteNumber } from "../../../../config/deliveryNote";
-
-const LOGISTICS_ICONS = {
-    INBOUND: <Tooltip title="Rücklieferung"><FileDownloadOutlined color='success' /></Tooltip>,
-    OUTBOUND: <Tooltip title="Ausgabe"><FileUploadOutlined color='error' /></Tooltip>,
-    CANCELLATION: <Tooltip title="Stornierung"><DoNotDisturbOutlined color='error' /></Tooltip>
-}
+import AdditionalListInformationCells from "../../../lists/table/AdditionalListInformationCells";
+import { DELIVERY_NOTE_LOGISTICS_ICONS } from "../../../../config/deliveryNote";
 
 
 function DeliveryNoteItem({ deliveryNote, isChangingVisibility, handleChangeDeliveryNoteVisible, handleChangeWarehouseWorker }) {
@@ -39,14 +32,14 @@ function DeliveryNoteItem({ deliveryNote, isChangingVisibility, handleChangeDeli
                         {deliveryNote.customer?.name}
                     </Typography>
                     <Typography variant="subtitle2">
-                        {formatDeliveryNoteNumber(deliveryNote)}
+                        {deliveryNote.uniqueNumber}
                     </Typography>
                 </TableCell>
                 <TableCell padding="normal" className="col-1" >
                     {deliveryNote.licensePlate}
                 </TableCell>
                 <TableCell padding="normal" align="center" className="col-1" >
-                    {LOGISTICS_ICONS[deliveryNote.logistics]}
+                    {DELIVERY_NOTE_LOGISTICS_ICONS[deliveryNote.logistics]}
                 </TableCell>
                 <AdditionalListInformationCells
                     list={deliveryNote}
