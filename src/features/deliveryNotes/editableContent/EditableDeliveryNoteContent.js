@@ -87,7 +87,7 @@ const EditableDeliveryNoteContent = ({ deliveryNote, onSaveButtonClicked }) => {
         valueChangeHandler: relatedDeliveryNoteChangeHandler,
         inputBlurHandler: relatedDeliveryNoteBlurHandler,
     } = useInput({
-        defaultValue: '',
+        defaultValue: null,
         initialValue: deliveryNote?.relatedDeliveryNote,
         validateValue: (value) => deliveryNote?.logistics === DELIVERY_NOTE_LOGISTICS.CANCELLATION ? value !== null : true
     });
