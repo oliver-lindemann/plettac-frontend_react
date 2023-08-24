@@ -25,10 +25,6 @@ import Redirect from './features/auth/Redirect';
 
 const Feedback = lazy(() => import('./features/settings/Feedback')); // Lazy
 
-const AllUsersPage = lazy(() => import('./pages/AllUsers')); // Lazy
-const NewUser = lazy(() => import('./features/users/NewUser')); // Lazy
-const EditUser = lazy(() => import('./features/users/EditUser')); // Lazy
-
 const DeliveryNote = lazy(() => import('./features/deliveryNotes/view/DeliveryNote')); // Lazy
 const AllDeliveryNotesPage = lazy(() => import('./pages/AllDeliveryNotes')); // Lazy
 const NewDeliveryNote = lazy(() => import('./features/deliveryNotes/NewDeliveryNote')); // Lazy
@@ -72,13 +68,6 @@ const AllRoutes = () => {
                   </Route>
                 </Route>
 
-                <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-                  <Route path='/users' >
-                    <Route index element={<AllUsersPage />} />
-                    <Route path=':id' element={<EditUser />} />
-                    <Route path='new' element={<NewUser />} />
-                  </Route>
-                </Route>
                 <Route element={<RequireAuth allowedRoles={[ROLES.Lager]} />}>
                   <Route path='/customers' >
                     <Route index element={<AllCustomersPage />} />
