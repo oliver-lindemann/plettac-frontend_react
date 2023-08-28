@@ -34,7 +34,7 @@ const EditCustomer = () => {
                     errorMessage = 'Es sind nicht genügend Daten an den Server gesendet worden';
                     break;
                 case 409:
-                    errorMessage = 'Der Kundenname oder Kurzname ist bereits vergeben. Bitte wähle einen anderen';
+                    errorMessage = 'Der Kundenname ist bereits vergeben. Bitte wähle einen anderen';
                     break;
                 default:
                     errorMessage = 'Es ist ein Fehler aufgetreten: ' + error.message;

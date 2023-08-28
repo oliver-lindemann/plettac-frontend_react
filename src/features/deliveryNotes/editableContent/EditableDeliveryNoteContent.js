@@ -322,7 +322,7 @@ const EditableDeliveryNoteContent = ({ deliveryNote, onSaveButtonClicked }) => {
     const handleDeliveryNoteFileImported = (updatedDeliveryNote) => {
         if (!updatedDeliveryNote) return;
 
-        setCustomer(customers?.find(customer => customer.shortName === updatedDeliveryNote.customer || customer.name === updatedDeliveryNote.customer)?.name || DEFAULT_CUSTOMER);
+        setCustomer(customers?.find(customer => customer.name === updatedDeliveryNote.customer)?.name || DEFAULT_CUSTOMER);
         setConstructionProject(updatedDeliveryNote.constructionProject);
         setLicensePlate(updatedDeliveryNote.licensePlate);
         setLogistics(updatedDeliveryNote.logistics);
