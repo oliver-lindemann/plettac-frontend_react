@@ -4,7 +4,7 @@ import autoTable from 'jspdf-autotable'
 import { formatDate } from '../../../utils/StringUtils';
 import { formatNumber, formatWeight } from '../../../utils/NumberUtils';
 import { getWeightSumOf, groupPartsByOrigin } from '../../../utils/checklist/ChecklistPartsUtils';
-import { DELIVERY_NOTE_LOGISTICS, formatDeliveryNoteNumber } from '../../../config/deliveryNote';
+import { DELIVERY_NOTE_LOGISTICS, DELIVERY_NOTE_LOGISTICS_LANG, formatDeliveryNoteNumber } from '../../../config/deliveryNote';
 import { getGroupAsString } from '../../../components/parts/list/DefaultPartItemsListHeader';
 
 const GMW_LOGO = new Image();
@@ -339,12 +339,12 @@ const addCustomerInfo = (pdf, deliveryNote) => {
 
     pdf.setFont(pdf.getFont().fontName, 'bold');
     const isOutbound = deliveryNote.logistics === DELIVERY_NOTE_LOGISTICS.OUTBOUND;
-    const deliveryNoteTitle = `Lieferschein ${formatDeliveryNoteNumber(deliveryNote)} - Mat.-${isOutbound ? 'Ausgabe' : 'Rücklieferung'}`;
+    const deliveryNoteTitle = `Lieferschein ${formatDeliveryNoteNumber(deliveryNote)} - ${DELIVERY_NOTE_LOGISTICS_LANG[deliveryNote.logistics]} ${deliveryNote.logistics === DELIVERY_NOTE_LOGISTICS.CANCELLATION && `zu ${formatDeliveryNoteNumber(deliveryNote.relatedDeliveryNote)}`}`;
     const deliveryNoteTitleLength = pdf.getTextWidth(deliveryNoteTitle);
     pdf.text(deliveryNoteTitle, MARGIN_X, anschriftY + 25);
     pdf.line(MARGIN_X, anschriftY + 27, MARGIN_X + deliveryNoteTitleLength, anschriftY + 27);
     pdf.setFont(pdf.getFont().fontName, 'normal');
-    pdf.text(`Datum: ${formatDate(new Date(deliveryNote.dateOfIssue))}`, 195, anschriftY + 25, null, null, 'right');
+    pdf.text(`Datum: ${formatDate(new Date(deliveryNote.dateOfIssue))} `, 195, anschriftY + 25, null, null, 'right');
 
     pdf.setFontSize(10);
     const namesOffsetX = pdf.getTextWidth("Empfänger") + 3;
@@ -360,11 +360,12 @@ const addCustomerInfo = (pdf, deliveryNote) => {
 
     const baseOffsetX = 70;
     const constructionProjectOffsetX = pdf.getTextWidth("Bauvorhaben") + 3;
-    pdf.text('Bauvorhaben:', baseOffsetX, anschriftY + 34);
-    pdf.text(deliveryNote.constructionProject, baseOffsetX + constructionProjectOffsetX, anschriftY + 34);
+    pdf.text('Kennzeichen:', baseOffsetX, anschriftY + 34);
+    pdf.text(deliveryNote.licensePlate, baseOffsetX + constructionProjectOffsetX, anschriftY + 34);
 
-    pdf.text('Kennzeichen:', baseOffsetX, anschriftY + 38);
-    pdf.text(deliveryNote.licensePlate, baseOffsetX + constructionProjectOffsetX, anschriftY + 38);
+    pdf.text('Bauvorhaben:', baseOffsetX, anschriftY + 38);
+    pdf.text(deliveryNote.constructionProject, baseOffsetX + constructionProjectOffsetX, anschriftY + 38);
+
 
     const storageOffsetX = pdf.getTextWidth("Ab Lager") + 3;
     pdf.text('Ab Lager:', baseOffsetX + 55, anschriftY + 34);
@@ -385,8 +386,8 @@ const addSignature = async (pdf, deliveryNote) => {
         pdf.addImage(signatureCustomerAsImage, 'JPEG', 25, 210, signatureCustomerAsImage.width * minRatioCustomer, signatureCustomerAsImage.height * minRatioCustomer)
     } catch (e) { }
 
-    // const signatureTextPersonInCharge = `${`${isOutbound? 'Empfänger' : 'Lieferant'}`}: ${deliveryNote.personInCharge}`
-    const signatureTextPersonInCharge = `Empfänger: ${isOutbound ? deliveryNote.personInCharge : deliveryNote.warehouseWorker?.name}`
+    // const signatureTextPersonInCharge = `${ `${isOutbound ? 'Empfänger' : 'Lieferant'}` }: ${ deliveryNote.personInCharge } `
+    const signatureTextPersonInCharge = `Empfänger: ${isOutbound ? deliveryNote.personInCharge : deliveryNote.warehouseWorker?.name} `
 
     const personInChargeTextWidth = pdf.getTextWidth(signatureTextPersonInCharge);
     const personInChargeTextXStart = ((85 - 20) - personInChargeTextWidth) / 2;
@@ -400,8 +401,8 @@ const addSignature = async (pdf, deliveryNote) => {
         pdf.addImage(signatureWarehouseWorkerAsImage, 'JPEG', 125, 210, signatureWarehouseWorkerAsImage.width * minRatioWarehouseWorker, signatureWarehouseWorkerAsImage.height * minRatioWarehouseWorker)
     } catch (e) { }
 
-    // const signatureTextWarehouseWorker = `${`${isOutbound ? 'Lieferant' : 'Empfänger'}`}: ${deliveryNote.warehouseWorker?.name} `
-    const signatureTextWarehouseWorker = `Lieferant: ${isOutbound ? deliveryNote.warehouseWorker?.name : deliveryNote.personInCharge}`
+    // const signatureTextWarehouseWorker = `${ `${isOutbound ? 'Lieferant' : 'Empfänger'}` }: ${ deliveryNote.warehouseWorker?.name } `
+    const signatureTextWarehouseWorker = `Lieferant: ${isOutbound ? deliveryNote.warehouseWorker?.name : deliveryNote.personInCharge} `
     const warehouseWorkerTextWith = pdf.getTextWidth(signatureTextWarehouseWorker);
     const warehouseWorkerTextXStart = ((185 - 120) - warehouseWorkerTextWith) / 2;
     pdf.line(120, 240, 185, 240);

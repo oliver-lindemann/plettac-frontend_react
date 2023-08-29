@@ -1,14 +1,13 @@
 import { useLocation } from 'react-router-dom'
 
-import { ArchiveOutlined, BadgeOutlined, BusinessOutlined, ChecklistOutlined, MenuOutlined, Search } from '@mui/icons-material'
-import { Badge, Collapse, Divider, Drawer, List, Toolbar } from '@mui/material'
+import { BusinessOutlined, ChecklistOutlined, MenuOutlined, Search } from '@mui/icons-material'
+import { Badge, Divider, Drawer, List, Toolbar } from '@mui/material'
 
 import useAuth from '../../hooks/auth/useAuth'
 import useDeliveryNotes from '../../hooks/deliveryNotes/useDeliveryNotes'
 
 import { useMemo } from 'react'
 import { LIST_STATUS } from '../../config/list'
-import { ROLES } from '../../config/roles'
 import DrawerListItem from './DrawerListItem'
 
 const getNumberOfOpenLists = (lists) => {
@@ -58,7 +57,7 @@ const LeftNav = () => {
                     route='/deliveryNotes'
                     baseRoute={baseRoute}
                 />
-                {
+                {/* {
                     (user?.isAdmin || user?.isLager || user?.roles?.includes(ROLES.Bauleiter)) && (
                         <Collapse in={baseRoute?.startsWith('/deliveryNotes')} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding>
@@ -72,7 +71,7 @@ const LeftNav = () => {
                             </List>
                         </Collapse>
                     )
-                }
+                } */}
 
             </List>
             {

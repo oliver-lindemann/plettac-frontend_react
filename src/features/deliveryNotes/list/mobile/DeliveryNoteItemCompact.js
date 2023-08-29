@@ -10,7 +10,7 @@ import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import useAuth from "../../../../hooks/auth/useAuth";
 import { formatDate } from "../../../../utils/StringUtils";
 import { LIST_STATUS_ICONS_MOBILE } from "../../../../config/list";
-import { DELIVERY_NOTE_LOGISTICS } from "../../../../config/deliveryNote";
+import { DELIVERY_NOTE_LOGISTICS, DELIVERY_NOTE_LOGISTICS_ICONS } from "../../../../config/deliveryNote";
 
 
 const LOCKED = <Chip size="small" sx={{ bgcolor: '#fae17d' }} icon={<LockOutlined />} label='Gesperrt' />;
@@ -80,11 +80,7 @@ function DeliveryNoteItemCompact({ deliveryNote, isVisible, handleVisibleDeliver
             <TableRow className="m-0 p-0" onClick={handleViewDeliveryNote}>
                 <TableCell padding="normal" colSpan={2} className="p-2 ps-0" >
                     <Typography variant="caption" display="block" style={{ textAlign: "end" }}>
-                        {
-                            deliveryNote.logistics === DELIVERY_NOTE_LOGISTICS.INBOUND
-                                ? <>Rücklieferung <HiArrowDownTray size="16" />  </>
-                                : <>Materialausgabe <HiArrowUpTray size="16" /> </>
-                        }
+                        {DELIVERY_NOTE_LOGISTICS_ICONS[deliveryNote.logistics]}
                     </Typography>
                 </TableCell>
             </TableRow>

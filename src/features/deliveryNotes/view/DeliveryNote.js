@@ -45,6 +45,7 @@ import DeliveryNoteHistory from '../../lists/history/ListHistory'; // lazy won't
 import LoadList from '../../lists/load/LoadList';
 import { generatePlettacPDF } from '../pdf/GeneratePdfPlettac';
 import { useConfirmDialog } from '../../../hooks/dialogs/useConfirm';
+import useDeliveryNotes from '../../../hooks/deliveryNotes/useDeliveryNotes';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -56,6 +57,7 @@ const DeliveryNote = () => {
         deliveryNote,
         mutate
     } = useDeliveryNote(id);
+    const { deliveryNotes } = useDeliveryNotes();
     const { enqueueSnackbar } = useSnackbar();
 
     console.log("ID: ", id, deliveryNote);
@@ -73,6 +75,8 @@ const DeliveryNote = () => {
 
     const [pdfFile, setPdfFile] = useState(null);
     const [pdfPages, setPdfPages] = useState([]);
+
+    const isDeliveryCancelled = deliveryNotes?.find(d => d.logistics === DELIVERY_NOTE_LOGISTICS.CANCELLATION && d.relatedDeliveryNote?._id === id);
 
     const actionButtons = [];
 
@@ -124,6 +128,7 @@ const DeliveryNote = () => {
 
             const resultAdd = await addDeliveryNote(deliveryNoteCopy);
             const resultUpdate = await updateDeliveryNote(updatedDeliveryNote);
+            mutate();
             console.log(resultAdd, resultUpdate);
         }
 
@@ -141,7 +146,7 @@ const DeliveryNote = () => {
     const generateAndSetPdfFile = (deliveryNote) => {
         setIsWaitingForPdf(true);
 
-        if (!checkIfAllFieldsSet()) {
+        if (!user?.isAdmin && !checkIfAllFieldsSet()) {
             setIsWaitingForPdf(false);
             return;
         }
@@ -472,7 +477,7 @@ const DeliveryNote = () => {
             </Button>
         )
 
-        if (deliveryNote?.logistics !== DELIVERY_NOTE_LOGISTICS.CANCELLATION) {
+        if (deliveryNote?.logistics !== DELIVERY_NOTE_LOGISTICS.CANCELLATION && !isDeliveryCancelled) {
             actionButtons.push(
                 <Button
                     color='error'
@@ -526,7 +531,7 @@ const DeliveryNote = () => {
                         <SwiperSlide style={{ width: '100%', height: '100%' }}>
                             <div className='m-1 mt-3'>
 
-                                <DeliveryNoteInformation deliveryNote={deliveryNote} switchToPreview={() => handleTabIndexChanged(2)} />
+                                <DeliveryNoteInformation deliveryNote={deliveryNote} switchToPreview={() => handleTabIndexChanged(2)} cancelled={isDeliveryCancelled} />
 
                                 <Stack gap={2} direction={{ sm: 'column', md: 'row' }} className='mt-3'>
                                     {actionButtons.map((button, index) => <div key={index}>{button}</div>)}
@@ -673,7 +678,7 @@ const DeliveryNote = () => {
                                     <Grid item xs={12} sm={12} md={12} lg={12} xl={5} xxl={3}>
                                         <div className='m-1 mt-3'>
 
-                                            <DeliveryNoteInformation deliveryNote={deliveryNote} switchToPreview={() => handleTabIndexChanged(1)} />
+                                            <DeliveryNoteInformation deliveryNote={deliveryNote} switchToPreview={() => handleTabIndexChanged(1)} cancelled={isDeliveryCancelled} />
 
                                             <Grid container spacing={2} className='mt-3'>
                                                 {actionButtons.map((button, index) => <Grid item key={index} xs={12} sm={12} md={6} lg={4} xl={6} xxl={4}> {button}</Grid>)}

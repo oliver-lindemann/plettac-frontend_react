@@ -1,7 +1,7 @@
 import { FileDownloadOutlined, FileUploadOutlined, MonetizationOnOutlined, QueryBuilderOutlined } from '@mui/icons-material'
 import { Alert, Card, CardContent, CircularProgress, Divider, Grid, Tooltip, Typography } from '@mui/material'
 import UserAvatar from '../../../components/utils/UserAvatar'
-import { DELIVERY_NOTE_LOGISTICS, formatDeliveryNoteNumber, formatNumber } from '../../../config/deliveryNote'
+import { DELIVERY_NOTE_LOGISTICS, DELIVERY_NOTE_LOGISTICS_ICONS_TEXT, formatDeliveryNoteNumber, formatNumber } from '../../../config/deliveryNote'
 import { LIST_STATUS_ICONS_MOBILE, LIST_STATUS_LANG } from '../../../config/list'
 import { formatDate } from '../../../utils/StringUtils'
 
@@ -24,7 +24,7 @@ const CustomCard = ({ children }) => {
     )
 }
 
-const DeliveryNoteInformation = ({ deliveryNote, switchToPreview }) => {
+const DeliveryNoteInformation = ({ deliveryNote, switchToPreview, cancelled }) => {
 
     if (!deliveryNote) {
         return <CircularProgress color='error' />
@@ -53,13 +53,17 @@ const DeliveryNoteInformation = ({ deliveryNote, switchToPreview }) => {
             <Divider className='mt-2 mb-2' />
 
             {
-                (!deliveryNote.signatures?.customer || !deliveryNote.signatures.warehouseWorker)
+                !!cancelled
                     ? (
-                        <Alert severity='warning' onClick={switchToPreview} className='mb-2'>
-                            Der Lieferschein wurde noch nicht unterschrieben. Bitte lasse den Lieferschein vor dem Drucken digital unterschreiben. Tippe hier, um zu den Unterschriften zu gelangen.
-                        </Alert>
+                        <Alert severity='error' className='mb-2'>Dieser Lieferschein wurde storniert.</Alert>
                     )
-                    : null
+                    : (!deliveryNote.signatures?.customer || !deliveryNote.signatures.warehouseWorker)
+                        ? (
+                            <Alert severity='warning' onClick={switchToPreview} className='mb-2'>
+                                Der Lieferschein wurde noch nicht unterschrieben. Bitte lasse den Lieferschein vor dem Drucken digital unterschreiben. Tippe hier, um zu den Unterschriften zu gelangen.
+                            </Alert>
+                        )
+                        : null
             }
 
             <Grid container spacing={1}>
@@ -92,11 +96,7 @@ const DeliveryNoteInformation = ({ deliveryNote, switchToPreview }) => {
                             {deliveryNote.type === 'Sale'
                                 ? <Tooltip title="Verkauf"><div className='d-flex gap-2 align-items-center'><MonetizationOnOutlined color="success" /> Verkauf</div></Tooltip>
                                 : null}
-                            {
-                                deliveryNote.logistics === DELIVERY_NOTE_LOGISTICS.INBOUND
-                                    ? <Tooltip title="Rücklieferung"><div className='d-flex gap-2 align-items-center'><FileDownloadOutlined color='success' />Rücklieferung</div></Tooltip>
-                                    : <Tooltip title="Ausgabe"><div className='d-flex gap-2 align-items-center'><FileUploadOutlined color='error' />Ausgabe</div></Tooltip>
-                            }
+                            {DELIVERY_NOTE_LOGISTICS_ICONS_TEXT[deliveryNote.logistics]}
                         </div>
                     </div>
                 </CustomCard>

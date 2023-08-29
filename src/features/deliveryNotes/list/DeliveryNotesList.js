@@ -13,6 +13,7 @@ import DeliveryNoteTable from "./browser/DeliveryNoteTable";
 import DeliveryNoteTableCompact from "./mobile/DeliveryNoteTableCompact";
 
 import { deDE } from '@mui/material/locale';
+import { formatDeliveryNoteNumber } from "../../../config/deliveryNote";
 
 function DeliveryNotesList() {
 
@@ -22,12 +23,14 @@ function DeliveryNotesList() {
         deliveryNotes,
     } = useDeliveryNotes();
 
+    const populatedDeliveryNotes = deliveryNotes?.map(deliveryNote => ({ ...deliveryNote, uniqueNumber: formatDeliveryNoteNumber(deliveryNote) }));
+
     const theme = useTheme();
     const themeWithLocale = useMemo(() => createTheme(theme, deDE), [theme]);
 
     const [searchQuery, setSearchQuery] = useState('');
     const searchValues = searchQuery.toLowerCase().split(' ');
-    const filteredDeliveryNotes = deliveryNotes?.filter(deliveryNote => searchValues.every(searchValue => removeWhitespace(JSON.stringify(deliveryNote)).toLowerCase().includes(searchValue)));
+    const filteredDeliveryNotes = populatedDeliveryNotes?.filter(deliveryNote => searchValues.every(searchValue => removeWhitespace(JSON.stringify(deliveryNote)).toLowerCase().includes(searchValue)));
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -110,7 +113,7 @@ function DeliveryNotesList() {
                             page={page}
                             onPageChange={handleChangePage}
                             rowsPerPage={rowsPerPage}
-                            rowsPerPageOptions={[5, 10]}
+                            rowsPerPageOptions={[5, 10, 20, 50]}
                             onRowsPerPageChange={handleChangeRowsPerPage}
                         />
                     </ThemeProvider>

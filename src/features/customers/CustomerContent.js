@@ -8,7 +8,6 @@ import FloatingButton from "../../components/layout/FloatingButton";
 const CustomerContent = ({ customer, onSaveButtonClicked }) => {
 
     const [name, setName] = useState(customer?.name || '');
-    const [shortName, setShortName] = useState(customer?.shortName || '');
     const [street, setStreet] = useState(customer?.street || '');
     const [city, setCity] = useState(customer?.city || '');
 
@@ -16,7 +15,6 @@ const CustomerContent = ({ customer, onSaveButtonClicked }) => {
     const [isSaving, setIsSaving] = useState(false);
 
     const onNameChanged = (e) => setName(e.target.value);
-    const onShortNameChanged = (e) => setShortName(e.target.value);
     const onStreetChanged = (e) => setStreet(e.target.value);
     const onCityChanged = (e) => setCity(e.target.value);
 
@@ -29,7 +27,6 @@ const CustomerContent = ({ customer, onSaveButtonClicked }) => {
             const updatedCustomer = {
                 ...customer,
                 name: name,
-                shortName: shortName,
                 street: street,
                 city: city
             }
@@ -61,19 +58,6 @@ const CustomerContent = ({ customer, onSaveButtonClicked }) => {
                             onChange={onNameChanged}
                             required />
                         <Form.Control.Feedback type='invalid'>Bitte gib einen Kundennamen ein.</Form.Control.Feedback>
-                    </FloatingLabel>
-                </Form.Group>
-
-                <Form.Group as={Col} className="mb-3">
-                    <FloatingLabel label="Kurzname">
-                        <Form.Control
-                            type='text'
-                            placeholder="Kurzname"
-                            value={shortName}
-                            onChange={onShortNameChanged}
-                            required
-                        />
-                        <Form.Control.Feedback type='invalid'>Bitte gib einen Kurznamen für den Kunden ein.</Form.Control.Feedback>
                     </FloatingLabel>
                 </Form.Group>
 

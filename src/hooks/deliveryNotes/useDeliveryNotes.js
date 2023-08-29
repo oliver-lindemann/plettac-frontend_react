@@ -13,13 +13,7 @@ const useDeliveryNotes = () => {
         mutate
     } = useSWR(user ? deliveryNotesUrlEndpoint : null, user?.isLager ? getDeliveryNotes : (async () => []), {
         refreshInterval: 30_000,
-        onSuccess: values => values.sort((a, b) => {
-            if (a.status === b.status) {
-                return a.dateOfCreation < b.dateOfCreation ? 1 : -1
-            } else {
-                return a.status < b.status ? 1 : -1;
-            }
-        })
+        onSuccess: values => values.sort((a, b) => a.uniqueNumber < b.uniqueNumber ? 1 : -1)
     });
 
     return {

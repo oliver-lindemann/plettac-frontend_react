@@ -19,7 +19,6 @@ const CreateCustomerDialog = ({ show, setShow, onCustomerCreated }) => {
     const handleClose = () => setShow(false);
 
     const nameRef = useRef();
-    const shortNameRef = useRef();
     const streetRef = useRef();
     const cityRef = useRef();
 
@@ -47,7 +46,7 @@ const CreateCustomerDialog = ({ show, setShow, onCustomerCreated }) => {
                     errorMessage = 'Bitte fülle alle geforderten Felder aus';
                     break;
                 case 409:
-                    errorMessage = 'Der Kundenname oder Kurzname ist bereits vergeben. Bitte wähle einen anderen';
+                    errorMessage = 'Der Kundenname ist bereits vergeben. Bitte wähle einen anderen';
                     break;
                 default:
                     errorMessage = 'Es ist ein Fehler aufgetreten: ' + error.message;
@@ -69,7 +68,6 @@ const CreateCustomerDialog = ({ show, setShow, onCustomerCreated }) => {
         if (form.checkValidity()) {
             const updatedCustomer = {
                 name: nameRef.current.value,
-                shortName: shortNameRef.current.value || nameRef.current.value,
                 street: streetRef.current.value,
                 city: cityRef.current.value
             }
@@ -99,16 +97,6 @@ const CreateCustomerDialog = ({ show, setShow, onCustomerCreated }) => {
                                 ref={nameRef}
                                 required />
                             <Form.Control.Feedback type='invalid'>Bitte gib einen Kundennamen ein.</Form.Control.Feedback>
-                        </FloatingLabel>
-                    </Form.Group>
-
-                    <Form.Group as={Col} className="mb-3">
-                        <FloatingLabel label="Kurzname">
-                            <Form.Control
-                                type='text'
-                                placeholder="Kurzname"
-                                ref={shortNameRef}
-                            />
                         </FloatingLabel>
                     </Form.Group>
 
