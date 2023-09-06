@@ -21,7 +21,7 @@ import DefaultContainer from '../../../components/layout/DefaultContainer';
 import FloatingButton from '../../../components/layout/FloatingButton';
 import CenteredPulseLoader from '../../../components/loading/CenteredPulseLoader';
 
-import { ArchiveOutlined, DoNotDisturbOutlined, Download, DrawOutlined, PrintOutlined } from '@mui/icons-material';
+import { ArchiveOutlined, DoNotDisturbOutlined, Download, DrawOutlined, PrintOutlined, RefreshOutlined } from '@mui/icons-material';
 import { BsPencilFill } from 'react-icons/bs';
 import { ROLES } from '../../../config/roles';
 import useSignatureDialog from '../../../hooks/dialogs/useSignatureDialog';
@@ -707,6 +707,12 @@ const DeliveryNote = () => {
                         tabIndex === 1
                             ? (
                                 <>
+                                    <Button
+                                        startIcon={<RefreshOutlined />}
+                                        onClick={() => generateAndSetPdfFile(deliveryNote)}
+                                    >
+                                        Erneut generieren
+                                    </Button>
                                     <div className='d-flex' style={{ flexDirection: 'column' }}>
 
                                         {/* <FormControlLabel

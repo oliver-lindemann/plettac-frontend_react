@@ -339,7 +339,7 @@ const addCustomerInfo = (pdf, deliveryNote) => {
 
     pdf.setFont(pdf.getFont().fontName, 'bold');
     const isOutbound = deliveryNote.logistics === DELIVERY_NOTE_LOGISTICS.OUTBOUND;
-    const deliveryNoteTitle = `Lieferschein ${formatDeliveryNoteNumber(deliveryNote)} - ${DELIVERY_NOTE_LOGISTICS_LANG[deliveryNote.logistics]} ${deliveryNote.logistics === DELIVERY_NOTE_LOGISTICS.CANCELLATION && `zu ${formatDeliveryNoteNumber(deliveryNote.relatedDeliveryNote)}`}`;
+    const deliveryNoteTitle = `Lieferschein ${formatDeliveryNoteNumber(deliveryNote)} - ${DELIVERY_NOTE_LOGISTICS_LANG[deliveryNote.logistics]} ${deliveryNote.logistics === DELIVERY_NOTE_LOGISTICS.CANCELLATION ? `zu ${formatDeliveryNoteNumber(deliveryNote.relatedDeliveryNote)}` : ''}`;
     const deliveryNoteTitleLength = pdf.getTextWidth(deliveryNoteTitle);
     pdf.text(deliveryNoteTitle, MARGIN_X, anschriftY + 25);
     pdf.line(MARGIN_X, anschriftY + 27, MARGIN_X + deliveryNoteTitleLength, anschriftY + 27);
