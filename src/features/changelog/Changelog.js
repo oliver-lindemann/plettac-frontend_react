@@ -48,15 +48,15 @@ const Changelog = () => {
         mutate();
     }
 
-    useEffect(() => {
-        // Do only refresh if effect was not previously executed or not Dev-Mode
-        if (!!currentUser && (!effectRan.current || process.env.NODE_ENV !== 'development')) {
-            checkForNewVersion();
+    // useEffect(() => {
+    //     // Do only refresh if effect was not previously executed or not Dev-Mode
+    //     if (!!currentUser && (!effectRan.current || process.env.NODE_ENV !== 'development')) {
+    //         checkForNewVersion();
 
-            return () => effectRan.current = true;
-        }
-        // eslint-disable-next-line
-    }, [currentUser])
+    //         return () => effectRan.current = true;
+    //     }
+    //     // eslint-disable-next-line
+    // }, [currentUser])
 
     return (
         <>
