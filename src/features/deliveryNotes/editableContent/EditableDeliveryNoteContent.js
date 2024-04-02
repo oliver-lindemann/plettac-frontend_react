@@ -693,8 +693,11 @@ const EditableDeliveryNoteContent = ({ deliveryNote, onSaveButtonClicked }) => {
 
             <div className='mt-3'>
                 <LocalizationProvider
-                    dateAdapter={AdapterDayjs}
-                    localeText={deDE.components.MuiLocalizationProvider.defaultProps.localeText}
+                  dateAdapter={AdapterDayjs}
+                  adapterLocale="de"
+                  localeText={
+                    deDE.components.MuiLocalizationProvider.defaultProps.localeText
+                  }
                 >
                     <DatePicker
                         format='DD.MM.YYYY'
