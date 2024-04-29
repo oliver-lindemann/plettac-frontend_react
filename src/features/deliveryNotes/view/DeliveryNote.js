@@ -93,6 +93,7 @@ const DeliveryNote = () => {
   const [isWaitingForPdf, setIsWaitingForPdf] = useState(false);
 
   const [pdfFile, setPdfFile] = useState(null);
+  const pdfFileAsString = pdfFile?.output("dataurlstring");
   const [numPages, setNumPages] = useState(0);
 
   const isDeliveryCancelled = deliveryNotes?.find(
@@ -646,7 +647,7 @@ const handleDownloadCSVFile = () => {
             <SwiperSlide style={{ maxWidth: "100%", height: "100%" }}>
               {tabIndex === 2 ? (
                 <Document
-                  file={pdfFile?.output("dataurlstring")}
+                  file={pdfFileAsString}
                   onLoadSuccess={({ numPages }) => setNumPages(numPages)}
                 >
           <Grid container spacing={1}>
@@ -839,7 +840,7 @@ const handleDownloadCSVFile = () => {
               
       <div style={{ marginBottom: "100px" }}>
               <Document
-                  file={pdfFile?.output("dataurlstring")}
+                  file={pdfFileAsString}
                   onLoadSuccess={({ numPages }) => setNumPages(numPages)}
                 >
           <Grid container spacing={1}>
