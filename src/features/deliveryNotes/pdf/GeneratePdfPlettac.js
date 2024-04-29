@@ -38,6 +38,9 @@ const TEXT_FONT_NAME = 'Arial';
 const TEXT_FONT_NORMAL = require('../../../resources/fonts/ARIAL.TTF');
 const TEXT_FONT_BOLD = require('../../../resources/fonts/ARIALBD.TTF');
 
+const SIGNATURE_MAX_WIDTH = 55;
+const SIGNATURE_MAX_HEIGHT = 30;
+
 export const generatePlettacPDF = async (deliveryNote) => {
     console.log("Generate PDF");
     const pdf = new jsPDF();
@@ -186,7 +189,7 @@ export const generatePlettacPDF = async (deliveryNote) => {
         addPageNumber(pdf);
     }
 
-    await addSignature(pdf, deliveryNote);
+    await addSignatures(pdf, deliveryNote);
 
     // The putTotalPages does not work with custom fonts
     performWithDefaultFont(pdf, () => {
@@ -374,43 +377,109 @@ const addCustomerInfo = (pdf, deliveryNote) => {
 
 }
 
-const addSignature = async (pdf, deliveryNote) => {
-    const maxWidth = 55;
-    const maxHeight = 30;
-    const isOutbound = deliveryNote.logistics === DELIVERY_NOTE_LOGISTICS.OUTBOUND;
-
+const addSignatures = async (pdf, deliveryNote) => {
+    const isOutbound =
+      deliveryNote.logistics === DELIVERY_NOTE_LOGISTICS.OUTBOUND;
+  
     pdf.setFontSize(10);
-    try {
-        const signatureCustomerAsImage = await loadImage(isOutbound ? deliveryNote.signatures?.customer : deliveryNote.signatures?.warehouseWorker);
-        const minRatioCustomer = Math.min(maxWidth / signatureCustomerAsImage.width, maxHeight / signatureCustomerAsImage.height)
-        pdf.addImage(signatureCustomerAsImage, 'JPEG', 25, 210, signatureCustomerAsImage.width * minRatioCustomer, signatureCustomerAsImage.height * minRatioCustomer)
-    } catch (e) { }
-
-    // const signatureTextPersonInCharge = `${ `${isOutbound ? 'Empfänger' : 'Lieferant'}` }: ${ deliveryNote.personInCharge } `
-    const signatureTextPersonInCharge = `Empfänger: ${isOutbound ? deliveryNote.personInCharge : deliveryNote.warehouseWorker?.name} `
-
-    const personInChargeTextWidth = pdf.getTextWidth(signatureTextPersonInCharge);
-    const personInChargeTextXStart = ((85 - 20) - personInChargeTextWidth) / 2;
-    pdf.line(20, 240, 85, 240);
-    pdf.text(signatureTextPersonInCharge, 20 + personInChargeTextXStart, 245);
-
-
-    try {
-        const signatureWarehouseWorkerAsImage = await loadImage(isOutbound ? deliveryNote.signatures?.warehouseWorker : deliveryNote.signatures?.customer);
-        const minRatioWarehouseWorker = Math.min(maxWidth / signatureWarehouseWorkerAsImage.width, maxHeight / signatureWarehouseWorkerAsImage.height)
-        pdf.addImage(signatureWarehouseWorkerAsImage, 'JPEG', 125, 210, signatureWarehouseWorkerAsImage.width * minRatioWarehouseWorker, signatureWarehouseWorkerAsImage.height * minRatioWarehouseWorker)
-    } catch (e) { }
-
-    // const signatureTextWarehouseWorker = `${ `${isOutbound ? 'Lieferant' : 'Empfänger'}` }: ${ deliveryNote.warehouseWorker?.name } `
-    const signatureTextWarehouseWorker = `Lieferant: ${isOutbound ? deliveryNote.warehouseWorker?.name : deliveryNote.personInCharge} `
-    const warehouseWorkerTextWith = pdf.getTextWidth(signatureTextWarehouseWorker);
-    const warehouseWorkerTextXStart = ((185 - 120) - warehouseWorkerTextWith) / 2;
-    pdf.line(120, 240, 185, 240);
-    pdf.text(signatureTextWarehouseWorker, 120 + warehouseWorkerTextXStart, 245);
-
+  
+    const leftSignatureImage = isOutbound
+      ? deliveryNote.signatures?.customer
+      : deliveryNote.signatures?.warehouseWorker;
+    const leftSignatureLabel = `Empfänger: ${
+      isOutbound
+        ? deliveryNote.personInCharge
+        : deliveryNote.warehouseWorker?.name
+    }`;
+    await addSignature({
+      pdf,
+      signatureX: 25,
+      signatureY: 210,
+      signatureBase64: leftSignatureImage,
+      label: leftSignatureLabel,
+    });
+  
+    const rightSignatureImage = isOutbound
+      ? deliveryNote.signatures?.warehouseWorker
+      : deliveryNote.signatures?.customer;
+    const rightSignatureLabel = `Lieferant: ${
+      isOutbound
+        ? deliveryNote.warehouseWorker?.name
+        : deliveryNote.personInCharge
+    }`;
+    await addSignature({
+      pdf,
+      signatureX: 125,
+      signatureY: 210,
+      signatureBase64: rightSignatureImage,
+      label: rightSignatureLabel,
+    });
+  
     pdf.setFontSize(8);
-    pdf.text('Mit der Unterschrift bestätigt der Empfänger den Erhalt, Vollständigkeit und ordnungsgemäßen Zustand der oben aufgelisteten Ware.', 20, 254);
-}
+    pdf.text(
+      "Mit der Unterschrift bestätigt der Empfänger den Erhalt, Vollständigkeit und ordnungsgemäßen Zustand der oben aufgelisteten Ware.",
+      20,
+      258
+    );
+  };
+  
+  const addSignature = async ({
+    pdf,
+    signatureX,
+    signatureY,
+    signatureBase64,
+    label,
+  }) => {
+    try {
+      if (!!signatureBase64) {
+        const signatureCustomerAsImage = await loadImage(signatureBase64);
+  
+        const minRatioCustomer = Math.min(
+          SIGNATURE_MAX_WIDTH / signatureCustomerAsImage.width,
+          SIGNATURE_MAX_HEIGHT / signatureCustomerAsImage.height
+        );
+  
+        const drawableSignatureWidth =
+          signatureCustomerAsImage.width * Math.min(1, minRatioCustomer);
+        const drawableSignatureHeight =
+          signatureCustomerAsImage.height * Math.min(1, minRatioCustomer);
+  
+        const signatureWidthPositionOffset =
+          SIGNATURE_MAX_WIDTH / 2 - drawableSignatureWidth / 2;
+        const signatureHeightPositionOffset =
+          SIGNATURE_MAX_HEIGHT - drawableSignatureHeight;
+  
+        pdf.addImage(
+          signatureCustomerAsImage,
+          "PNG",
+          signatureX + signatureWidthPositionOffset,
+          signatureY + signatureHeightPositionOffset,
+          drawableSignatureWidth,
+          drawableSignatureHeight
+        );
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  
+    /* Draw Signature Line below signature image and above signature label */
+    const signatureLineY = signatureY + SIGNATURE_MAX_HEIGHT;
+    const signatureLineXStart = signatureX - 5;
+    const signatureLineXEnd = signatureX + SIGNATURE_MAX_WIDTH + 5;
+    pdf.line(
+      signatureLineXStart,
+      signatureLineY,
+      signatureLineXEnd,
+      signatureLineY
+    );
+  
+    /* Add signature label below signature line */
+    const labelTextWidth = pdf.getTextWidth(label);
+    const labelTextStartX =
+      (signatureLineXEnd - signatureLineXStart - labelTextWidth) / 2;
+    pdf.text(label, signatureLineXStart + labelTextStartX, signatureLineY + 5);
+  };
+  
 
 const loadImage = (src) => {
     return new Promise((resolve, reject) => {

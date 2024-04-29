@@ -93,7 +93,7 @@ const DeliveryNote = () => {
   const [isWaitingForPdf, setIsWaitingForPdf] = useState(false);
 
   const [pdfFile, setPdfFile] = useState(null);
-  const [pdfPages, setPdfPages] = useState([]);
+  const [numPages, setNumPages] = useState(0);
 
   const isDeliveryCancelled = deliveryNotes?.find(
     (d) =>
@@ -248,14 +248,6 @@ const DeliveryNote = () => {
           warehouseWorker: signature,
         }),
     });
-  };
-
-  const handlePdfLoaded = async (pdf) => {
-    const allPageNumbers = []; // array of numbers
-    for (let p = 0; p < pdf.numPages; p++) {
-      allPageNumbers.push(p);
-    }
-    setPdfPages(allPageNumbers);
   };
 
   const onBeginLoading = async () => {
@@ -655,20 +647,23 @@ const handleDownloadCSVFile = () => {
               {tabIndex === 2 ? (
                 <Document
                   file={pdfFile?.output("dataurlstring")}
-                  onLoadSuccess={handlePdfLoaded}
+                  onLoadSuccess={({ numPages }) => setNumPages(numPages)}
                 >
-                  <div style={{ marginBottom: "50px" }}>
-                    {pdfPages.length > 0
-                      ? pdfPages.map((pageIndex) => (
-                          <Page
-                            key={pageIndex}
-                            pageIndex={pageIndex}
-                            renderAnnotationLayer={false}
-                            renderTextLayer={false}
-                          />
-                        ))
-                      : null}
-                  </div>
+          <Grid container spacing={1}>
+            {Array.apply(null, Array(numPages))
+              .map((x, i) => i + 1)
+              .map((page) => (
+                <Grid>
+                  <Page
+                    key={page}
+                    size="A4"
+                    renderAnnotationLayer={false}
+                    renderTextLayer={false}
+                    pageNumber={page}
+                  />
+                </Grid>
+              ))}
+          </Grid>
                 </Document>
               ) : null}
             </SwiperSlide>
@@ -841,24 +836,28 @@ const handleDownloadCSVFile = () => {
               >
                 Erneut generieren
               </Button>
-              <div className="d-flex" style={{ flexDirection: "column" }}>
-                {/* <FormControlLabel
-                                            control={
-                                                <Checkbox
-                                                    checked={asPlettac}
-                                                    onChange={(e, checked) => setAsPlettac(checked)}
-                                                />
-                                            }
-                                            label="Als Plettac Lieferschein"
-                                        /> */}
-                <object
-                  id="pdf"
-                  data={pdfFile?.output("dataurlstring")}
-                  type="application/pdf"
-                  width={"800px"}
-                  style={{ height: "calc(100vh - 200px)" }}
-                ></object>
-              </div>
+              
+      <div style={{ marginBottom: "100px" }}>
+              <Document
+                  file={pdfFile?.output("dataurlstring")}
+                  onLoadSuccess={({ numPages }) => setNumPages(numPages)}
+                >
+          <Grid container spacing={1}>
+            {Array.apply(null, Array(numPages))
+              .map((x, i) => i + 1)
+              .map((page) => (
+                <Grid>
+                  <Page
+                    key={page}
+                    size="A4"
+                    renderAnnotationLayer={false}
+                    renderTextLayer={false}
+                    pageNumber={page}
+                  />
+                </Grid>
+              ))}
+          </Grid>
+                </Document>    </div>
               {/* <Document
                                         file={pdfFile?.output('dataurlstring')}
                                         onLoadSuccess={handlePdfLoaded}
