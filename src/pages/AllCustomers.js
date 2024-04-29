@@ -8,35 +8,30 @@ import FloatingButton from "../components/layout/FloatingButton";
 import { AddOutlined } from "@mui/icons-material";
 
 function AllCustomersPage() {
+  const navigate = useNavigate();
+  const { customers, mutate, isLoading, error } = useCustomers();
 
-    const navigate = useNavigate();
-    const {
-        customers,
-        isLoading,
-        error
-    } = useCustomers();
+  const handleCreateNewCustomer = () => {
+    navigate("/customers/new");
+  };
 
-    const handleCreateNewCustomer = () => {
-        navigate('/customers/new');
-    }
+  if (!customers || isLoading) {
+    return <CenteredPulseLoader />;
+  }
+  if (error) {
+    return <ErrorPage error={error} />;
+  }
 
-    if (!customers || isLoading) {
-        return <CenteredPulseLoader />;
-    }
-    if (error) {
-        return <ErrorPage error={error} />
-    }
+  return (
+    <DefaultContainer>
+      <CustomersList customers={customers} mutate={mutate} />
 
-    return (
-        <DefaultContainer>
-            <CustomersList customers={customers} />
-
-            <FloatingButton
-                onClick={handleCreateNewCustomer}
-                icon={<AddOutlined />}
-            />
-        </DefaultContainer>
-    );
+      <FloatingButton
+        onClick={handleCreateNewCustomer}
+        icon={<AddOutlined />}
+      />
+    </DefaultContainer>
+  );
 }
 
 export default AllCustomersPage;
