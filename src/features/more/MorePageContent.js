@@ -15,6 +15,7 @@ import { useSnackbar } from "notistack";
 import { LINKS } from '../../config/accessiblePages';
 import { ROLES } from "../../config/roles";
 import { ReactComponent as QRLogo } from '../../images/gmwqr.svg';
+import useInventories from "../../hooks/inventories/useInventories";
 
 function MorePage() {
 
@@ -23,6 +24,7 @@ function MorePage() {
         user: currentUser,
         mutate
     } = useUser(user?.id);
+    const { inventories } = useInventories();
     const { enqueueSnackbar } = useSnackbar();
 
     const [isLoading, setIsLoading] = useState(false);
@@ -40,6 +42,10 @@ function MorePage() {
         mobileCards.push(LINKS.DeliveryNotes);
     }
 
+    if (user?.isAdmin || inventories?.length > 0) {
+        mobileCards.push(LINKS.Inventories);
+    }
+    
     if (user?.isLager) {
         mobileCards.push(LINKS.Customers);
     }

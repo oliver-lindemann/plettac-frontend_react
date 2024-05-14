@@ -20,6 +20,8 @@ function AllPartsPage() {
         error
     } = useParts();
 
+    const plettacParts = parts?.filter(part => part.plettacAvailable)
+
     const imageModal = useImageModal();
     const [showQRModal, setShowQRModal] = useState(false);
 
@@ -42,7 +44,7 @@ function AllPartsPage() {
                 onResult={handleQRResult}
             />
 
-            <SearchablePartsList parts={parts} />
+            <SearchablePartsList parts={plettacParts} />
 
             <FloatingButton
                 onClick={() => setShowQRModal(true)}

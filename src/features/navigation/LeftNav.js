@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom'
 
-import { BusinessOutlined, ChecklistOutlined, MenuOutlined, Search } from '@mui/icons-material'
+import { BusinessOutlined, ChecklistOutlined, Inventory2Outlined, MenuOutlined, Search } from '@mui/icons-material'
 import { Badge, Divider, Drawer, List, Toolbar } from '@mui/material'
 
 import useAuth from '../../hooks/auth/useAuth'
@@ -9,6 +9,7 @@ import useDeliveryNotes from '../../hooks/deliveryNotes/useDeliveryNotes'
 import { useMemo } from 'react'
 import { LIST_STATUS } from '../../config/list'
 import DrawerListItem from './DrawerListItem'
+import useInventories from '../../hooks/inventories/useInventories'
 
 const getNumberOfOpenLists = (lists) => {
     return lists?.reduce((result, list) => result + (list.status === LIST_STATUS.OPEN ? 1 : 0), 0)
@@ -17,6 +18,7 @@ const getNumberOfOpenLists = (lists) => {
 const LeftNav = () => {
 
     const { user } = useAuth();
+    const { inventories } = useInventories();
     const { deliveryNotes } = useDeliveryNotes();
     const location = useLocation();
 
@@ -72,6 +74,15 @@ const LeftNav = () => {
                         </Collapse>
                     )
                 } */}
+
+{(user?.isAdmin || inventories?.length > 0) && (
+          <DrawerListItem
+            text="Inventuren"
+            icon={<Inventory2Outlined />}
+            route="/inventories"
+            baseRoute={baseRoute}
+          />
+        )}
 
             </List>
             {
