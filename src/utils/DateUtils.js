@@ -6,6 +6,7 @@ dayjs.extend(utc);
 dayjs.extend(minMax);
 dayjs.locale('de');
 
+export const WEEKDAY_FRIDAY = 5;
 export const WEEKDAY_SATURDAY = 6;
 export const WEEKDAY_SUNDAY = 0;
 

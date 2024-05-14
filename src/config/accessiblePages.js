@@ -1,4 +1,4 @@
-import { BadgeOutlined, BusinessOutlined, ChecklistOutlined, Search, SettingsOutlined } from "@mui/icons-material";
+import { BadgeOutlined, BusinessOutlined, ChecklistOutlined, Inventory2Outlined, Search, SettingsOutlined } from "@mui/icons-material";
 
 export const LINKS = {
     Settings: {
@@ -15,6 +15,11 @@ export const LINKS = {
         linkTo: '/deliveryNotes',
         icon: <ChecklistOutlined fontSize="inherit" />,
         text: 'Lieferscheine'
+    },
+    Inventories: {
+        linkTo: '/inventories',
+        icon: <Inventory2Outlined fontSize="inherit" />,
+        text: 'Inventuren'
     },
     Customers: {
         linkTo: '/customers',
