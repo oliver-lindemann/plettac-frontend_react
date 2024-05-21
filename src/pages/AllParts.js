@@ -11,6 +11,7 @@ import QrScannerModal from "../components/modal/QrScannerModal";
 import SearchablePartsList from "../features/parts/SearchablePartsList";
 
 import { BsUpcScan } from "react-icons/bs";
+import usePartsPlettac from "../hooks/parts/usePartsPlettac";
 
 function AllPartsPage() {
 
@@ -18,9 +19,7 @@ function AllPartsPage() {
         parts,
         isLoading,
         error
-    } = useParts();
-
-    const plettacParts = parts?.filter(part => part.plettacAvailable)
+    } = usePartsPlettac();
 
     const imageModal = useImageModal();
     const [showQRModal, setShowQRModal] = useState(false);
@@ -44,7 +43,7 @@ function AllPartsPage() {
                 onResult={handleQRResult}
             />
 
-            <SearchablePartsList parts={plettacParts} />
+            <SearchablePartsList parts={parts} />
 
             <FloatingButton
                 onClick={() => setShowQRModal(true)}

@@ -23,7 +23,7 @@ const PerformInventory = () => {
   const { inventory, isLoading, error, mutate } = useInventory(id);
 
   const { parts } = useParts();
-  const plettacParts = parts?.filter(part => part.plettacAvailable);
+  const plettacParts = parts?.filter(part =>  part.availableAt.includes('Konsi'));
   
   const [inventoryPartsList, setInventoryPartsList] = useState(
     inventory?.parts || []

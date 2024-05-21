@@ -5,9 +5,6 @@ import { BASE_URL } from '../../../app/api/api';
 const PartImageCarouselItem = (props) => {
     const { part, image } = props;
 
-    const imageName = image.split('/').pop().replace(/[\s()]/g, '_');
-    console.log("Rerender")
-
     const modifiedProps = {
         ...props
     }
