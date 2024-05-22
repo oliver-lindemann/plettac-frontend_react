@@ -22,7 +22,6 @@ const Part = () => {
     useEffect(() => {
         const getImages = async () => {
             const response = await getPartImages([partImagessUrlEndpoint, part._id]);
-            console.log(response);
             if (!response
                 || !response.imageFiles
                 || response.imageFiles.length <= 0) {

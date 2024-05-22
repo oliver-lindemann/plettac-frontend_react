@@ -1,38 +1,27 @@
-import React, { useMemo } from 'react';
-import { Carousel } from 'react-bootstrap';
-import { BASE_URL } from '../../../app/api/api';
+import React, { useState } from "react";
+import { nanoid } from "nanoid";
+import { Carousel } from "react-bootstrap";
+import { Skeleton } from "@mui/material";
 
 const PartImageCarouselItem = (props) => {
-    const { part, image } = props;
+  const { part, thumbnail, imageUrl } = props;
 
-    const modifiedProps = {
-        ...props
-    }
+  return (
+    // Props has to be forwareded to Carousel.Item
+    <Carousel.Item {...props} key={nanoid()}>
+      <div
+        className="carousel-img"
+        style={{
+          backgroundImage: `url(${imageUrl}?tr=w-100,q-50)`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          backgroundSize: "contain",
+        }}
+      >
+        <img src={imageUrl} className="carousel-img" />
+      </div>
+    </Carousel.Item>
+  );
+};
 
-    delete modifiedProps.part;
-    delete modifiedProps.image;
-
-    const CarouselItem = useMemo(() => (
-        <Carousel.Item {...modifiedProps}>
-            <img
-                src={`${BASE_URL}${image}`}
-                className="carousel-img"
-                alt={part.name}
-            />
-            {/* <IKImage
-                path={`parts/${imageName}`}
-                // transformation={[{ height: 300, width: 400 }]}
-                // lqip={{ active: true, quality: 20 }}
-                // loading="lazy"
-                className='carousel-img'
-                alt='part'
-            /> */}
-        </Carousel.Item>
-    ), [image])
-
-    return (
-        <>{CarouselItem}</>
-    )
-}
-
-export default PartImageCarouselItem
+export default PartImageCarouselItem;
