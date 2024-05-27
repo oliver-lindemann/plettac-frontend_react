@@ -17,6 +17,7 @@ import useAuth from "../../../hooks/auth/useAuth";
 import useDeliveryNote from "../../../hooks/deliveryNotes/useDeliveryNote";
 
 import {
+  Alert,
   Backdrop,
   Button,
   CircularProgress,
@@ -580,6 +581,10 @@ const handleDownloadCSVFile = () => {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
+
+      {
+        !deliveryNote?.customer?.customerNr && (<Alert severity="warning">Es ist keine Kundennummer zu diesem Kunden hinterlegt.</Alert>)
+      }
 
       <DefaultContainer heightSubtract={TAB_HEIGHT}>
         <MobileView style={{ height: "100%" }}>
