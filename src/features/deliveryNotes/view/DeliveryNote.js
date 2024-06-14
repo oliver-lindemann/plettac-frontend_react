@@ -63,13 +63,13 @@ import { TOP_NAV_HEIGHT } from "../../navigation/TopNav";
 import { useSnackbar } from "notistack";
 import { DELIVERY_NOTE_LOGISTICS } from "../../../config/deliveryNote";
 import { LIST_STATUS } from "../../../config/list";
+import useDeliveryNotes from "../../../hooks/deliveryNotes/useDeliveryNotes";
+import { useConfirmDialog } from "../../../hooks/dialogs/useConfirm";
 import ListPartsTableView from "../../lists/ListPartsTableView";
 import DeliveryNoteHistory from "../../lists/history/ListHistory"; // lazy won't work with slider -> rerenders complete
 import LoadList from "../../lists/load/LoadList";
-import { generatePlettacPDF } from "../pdf/GeneratePdfPlettac";
-import { useConfirmDialog } from "../../../hooks/dialogs/useConfirm";
-import useDeliveryNotes from "../../../hooks/deliveryNotes/useDeliveryNotes";
 import { generateCSV } from "../csv/GenerateCSV";
+import { generatePlettacPDF } from "../pdf/GeneratePdfPlettac";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -123,7 +123,7 @@ const DeliveryNote = () => {
     if (!allRequiredFieldsSet) {
       Swal.fire({
         title: "Fehlende Daten",
-        text: "Es sind nicht alle benötigten Daten eingtragen, um eine PDF zu generieren bzw. den Lieferschein zu drucken. Bitte überprüfe: Kundenname, Kundenadresse, Verantwortliche Person und das Nummernschild.",
+        text: "Es sind nicht alle benötigten Daten eingtragen. Bitte überprüfe, ob folgende Felder ausgefüllt sind: Kundenname, Kundenadresse, Verantwortliche Person und das Nummernschild.",
         icon: "warning",
       });
     }
@@ -174,7 +174,8 @@ const DeliveryNote = () => {
   const generateAndSetPdfFile = (deliveryNote) => {
     setIsWaitingForPdf(true);
 
-    if (!user?.isAdmin && !checkIfAllFieldsSet()) {
+    if (!user?.isAdmin) {
+      checkIfAllFieldsSet();
       setIsWaitingForPdf(false);
       return;
     }
@@ -372,10 +373,7 @@ const DeliveryNote = () => {
   const handlePrintPdfFile = () => {
     setIsWaitingForPdf(true);
 
-    if (!checkIfAllFieldsSet()) {
-      setIsWaitingForPdf(false);
-      return;
-    }
+    checkIfAllFieldsSet();
 
     setTimeout(async () => {
       try {
@@ -412,10 +410,7 @@ const handleDownloadCSVFile = () => {
   const handleDownloadPdfFile = () => {
     setIsWaitingForPdf(true);
 
-    if (!checkIfAllFieldsSet()) {
-      setIsWaitingForPdf(false);
-      return;
-    }
+    checkIfAllFieldsSet();
 
     setTimeout(async () => {
       try {
