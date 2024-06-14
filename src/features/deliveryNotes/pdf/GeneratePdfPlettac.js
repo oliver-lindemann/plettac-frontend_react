@@ -1,11 +1,11 @@
 import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable'
+import autoTable from 'jspdf-autotable';
 
-import { formatDate } from '../../../utils/StringUtils';
-import { formatNumber, formatWeight } from '../../../utils/NumberUtils';
-import { getWeightSumOf, groupPartsByOrigin } from '../../../utils/checklist/ChecklistPartsUtils';
-import { DELIVERY_NOTE_LOGISTICS, DELIVERY_NOTE_LOGISTICS_LANG, formatDeliveryNoteNumber } from '../../../config/deliveryNote';
 import { getGroupAsString } from '../../../components/parts/list/DefaultPartItemsListHeader';
+import { DELIVERY_NOTE_LOGISTICS, DELIVERY_NOTE_LOGISTICS_LANG, formatDeliveryNoteNumber } from '../../../config/deliveryNote';
+import { formatNumber, formatWeight } from '../../../utils/NumberUtils';
+import { formatDate } from '../../../utils/StringUtils';
+import { getWeightSumOf, groupPartsByOrigin } from '../../../utils/checklist/ChecklistPartsUtils';
 
 const GMW_LOGO = new Image();
 const PLETTAC_LOGO = new Image();
@@ -339,6 +339,7 @@ const addCustomerInfo = (pdf, deliveryNote) => {
     pdf.text(deliveryNote.customer?.name || '', MARGIN_X, anschriftY);
     pdf.text(deliveryNote.customer?.street || '', MARGIN_X, anschriftY + 5);
     pdf.text(deliveryNote.customer?.city || '', MARGIN_X, anschriftY + 10);
+    pdf.text("Kdnr.: " +deliveryNote.customer?.customerNr || '', MARGIN_X, anschriftY + 16);
 
     pdf.setFont(pdf.getFont().fontName, 'bold');
     const isOutbound = deliveryNote.logistics === DELIVERY_NOTE_LOGISTICS.OUTBOUND;
