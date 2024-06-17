@@ -30,6 +30,14 @@ export const deleteDeliveryNote = async (deliveryNoteId) => {
     return await baseAuthApi.delete(`${deliveryNotesUrlEndpoint}/${deliveryNoteId}`)
 }
 
+export const isDeliveryNoteUploadedToPlettacServer = async (deliveryNote) => {
+    return await baseAuthApi.get(`${deliveryNotesUrlEndpoint}/csvupload/${deliveryNote._id}`)
+}
+
+export const uploadDeliveryNoteToPlettacServer = async (deliveryNote) => {
+    return await baseAuthApi.post(`${deliveryNotesUrlEndpoint}/csvupload`, {deliveryNoteId: deliveryNote._id})
+}
+
 export const downloadExcelFile = async (deliveryNoteId) => {
     return await baseAuthApi.get(`${deliveryNotesUrlEndpoint}/file/${deliveryNoteId}`, {
         responseType: 'blob'

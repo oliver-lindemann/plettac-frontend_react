@@ -11,7 +11,9 @@ import {
   addDeliveryNote,
   downloadExcelFile,
   getHistory,
+  isDeliveryNoteUploadedToPlettacServer,
   updateDeliveryNote,
+  uploadDeliveryNoteToPlettacServer,
 } from "../../../app/api/deliveryNotesApi";
 import useAuth from "../../../hooks/auth/useAuth";
 import useDeliveryNote from "../../../hooks/deliveryNotes/useDeliveryNote";
@@ -44,6 +46,7 @@ import {
   DrawOutlined,
   PrintOutlined,
   RefreshOutlined,
+  UploadFileOutlined,
 } from "@mui/icons-material";
 import { BsPencilFill } from "react-icons/bs";
 import { ROLES } from "../../../config/roles";
@@ -91,6 +94,9 @@ const DeliveryNote = () => {
   const [tabIndex, setTabIndex] = useState(0);
 
   const [isWaitingForDownload, setIsWaitingForDownload] = useState(false);
+
+  const [isCsvUploaded, setIsCsvUploaded] = useState(false);
+  const [isWaitingForUpload, setIsWaitingForUpload] = useState(false);
   const [isWaitingForPdf, setIsWaitingForPdf] = useState(false);
 
   const [pdfFile, setPdfFile] = useState(null);
@@ -104,6 +110,24 @@ const DeliveryNote = () => {
   );
 
   const actionButtons = [];
+
+  const checkIfCsvIsUploaded = async () => {
+    try {
+      setIsWaitingForUpload(true);
+      const response = await isDeliveryNoteUploadedToPlettacServer(
+        deliveryNote
+      );
+      console.log(response);
+      setIsCsvUploaded(response.data?.result === 1);
+    } finally {
+      setIsWaitingForUpload(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!deliveryNote) return;
+    checkIfCsvIsUploaded();
+  }, [deliveryNote]);
 
   console.log("Swiper: ", swiper?.activeIndex);
 
@@ -391,12 +415,12 @@ const DeliveryNote = () => {
     }, 250);
   };
 
-const handleDownloadCSVFile = () => {
+  const handleDownloadCSVFile = () => {
     setTimeout(async () => {
       try {
         const csvAsString = generateCSVFile(deliveryNote);
         FileSaver.saveAs(
-            csvAsString,
+          csvAsString,
           `Lieferschein CSV ${deliveryNote.customer?.name} - ${formatDate(
             deliveryNote.dateOfCreation
           )}.csv`
@@ -405,7 +429,26 @@ const handleDownloadCSVFile = () => {
         setIsWaitingForPdf(false);
       }
     }, 250);
-}
+  };
+
+  const handleUploadCSVFile = async () => {
+    setIsWaitingForUpload(true);
+    try {
+      console.log("UploadingToServer");
+      const response = await uploadDeliveryNoteToPlettacServer(deliveryNote);
+      enqueueSnackbar("Lieferschein erfolgreich hochgeladen!", {
+        variant: "success",
+      });
+      await checkIfCsvIsUploaded();
+      console.log("Upload completed");
+    } catch (error) {
+      enqueueSnackbar("Fehler beim Hochladen des Lieferscheins", {
+        variant: "error",
+      });
+    } finally {
+      setIsWaitingForUpload(false);
+    }
+  };
 
   const handleDownloadPdfFile = () => {
     setIsWaitingForPdf(true);
@@ -484,9 +527,27 @@ const handleDownloadCSVFile = () => {
       fullWidth
       onClick={handleDownloadCSVFile}
       disabled={isWaitingForDownload}
-      startIcon={isWaitingForDownload ? <Spinner size="sm" /> : <ArticleOutlined />}
+      startIcon={
+        isWaitingForDownload ? <Spinner size="sm" /> : <ArticleOutlined />
+      }
     >
       CSV Herunterladen
+    </Button>
+  );
+
+  actionButtons.push(
+    <Button
+      color="success"
+      variant="contained"
+      size={isMobile ? "large" : "medium"}
+      fullWidth
+      onClick={handleUploadCSVFile}
+      disabled={isWaitingForUpload}
+      startIcon={
+        isWaitingForUpload ? <Spinner size="sm" /> : <UploadFileOutlined />
+      }
+    >
+      CSV {isCsvUploaded ? "erneut" : ""} hochladen
     </Button>
   );
 
@@ -577,9 +638,11 @@ const handleDownloadCSVFile = () => {
         <CircularProgress color="inherit" />
       </Backdrop>
 
-      {
-        !deliveryNote?.customer?.customerNr && (<Alert severity="warning">Es ist keine Kundennummer zu diesem Kunden hinterlegt.</Alert>)
-      }
+      {!deliveryNote?.customer?.customerNr && (
+        <Alert severity="warning">
+          Es ist keine Kundennummer zu diesem Kunden hinterlegt.
+        </Alert>
+      )}
 
       <DefaultContainer heightSubtract={TAB_HEIGHT}>
         <MobileView style={{ height: "100%" }}>
@@ -650,21 +713,21 @@ const handleDownloadCSVFile = () => {
                   file={pdfFileAsString}
                   onLoadSuccess={({ numPages }) => setNumPages(numPages)}
                 >
-          <Grid container spacing={1}>
-            {Array.apply(null, Array(numPages))
-              .map((x, i) => i + 1)
-              .map((page) => (
-                <Grid>
-                  <Page
-                    key={page}
-                    size="A4"
-                    renderAnnotationLayer={false}
-                    renderTextLayer={false}
-                    pageNumber={page}
-                  />
-                </Grid>
-              ))}
-          </Grid>
+                  <Grid container spacing={1}>
+                    {Array.apply(null, Array(numPages))
+                      .map((x, i) => i + 1)
+                      .map((page) => (
+                        <Grid>
+                          <Page
+                            key={page}
+                            size="A4"
+                            renderAnnotationLayer={false}
+                            renderTextLayer={false}
+                            pageNumber={page}
+                          />
+                        </Grid>
+                      ))}
+                  </Grid>
                 </Document>
               ) : null}
             </SwiperSlide>
@@ -837,28 +900,29 @@ const handleDownloadCSVFile = () => {
               >
                 Erneut generieren
               </Button>
-              
-      <div style={{ marginBottom: "100px" }}>
-              <Document
+
+              <div style={{ marginBottom: "100px" }}>
+                <Document
                   file={pdfFileAsString}
                   onLoadSuccess={({ numPages }) => setNumPages(numPages)}
                 >
-          <Grid container spacing={1}>
-            {Array.apply(null, Array(numPages))
-              .map((x, i) => i + 1)
-              .map((page) => (
-                <Grid>
-                  <Page
-                    key={page}
-                    size="A4"
-                    renderAnnotationLayer={false}
-                    renderTextLayer={false}
-                    pageNumber={page}
-                  />
-                </Grid>
-              ))}
-          </Grid>
-                </Document>    </div>
+                  <Grid container spacing={1}>
+                    {Array.apply(null, Array(numPages))
+                      .map((x, i) => i + 1)
+                      .map((page) => (
+                        <Grid>
+                          <Page
+                            key={page}
+                            size="A4"
+                            renderAnnotationLayer={false}
+                            renderTextLayer={false}
+                            pageNumber={page}
+                          />
+                        </Grid>
+                      ))}
+                  </Grid>
+                </Document>{" "}
+              </div>
               {/* <Document
                                         file={pdfFile?.output('dataurlstring')}
                                         onLoadSuccess={handlePdfLoaded}
