@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { getCustomers, customersUrlEndpoint } from "../../app/api/customersApi";
+import { customersUrlEndpoint, getCustomers } from "../../app/api/customersApi";
 import useAuth from "../auth/useAuth";
 
 const useCustomers = () => {
@@ -17,15 +17,15 @@ const useCustomers = () => {
   );
 
   return {
-    // customers: data?.filter(
-    //   //Filter for customers that has a customer number
-    //   // Only these are relevant for this app because only they are authorized to get material
-    //   (cs) =>
-    //     cs.customerNr !== undefined &&
-    //     cs.customerNr !== null &&
-    //     cs.customerNr.trim() !== ""
-    // ),
-    customers: data,
+    customers: data?.filter(
+      //Filter for customers that has a customer number
+      // Only these are relevant for this app because only they are authorized to get material
+      (cs) =>
+        cs.customerNr !== undefined &&
+        cs.customerNr !== null &&
+        cs.customerNr.trim() !== ""
+    ),
+    // customers: data,
     isLoading,
     error,
     mutate,
